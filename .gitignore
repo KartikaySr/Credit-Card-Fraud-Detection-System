@@ -57,7 +57,7 @@ dmypy.json
 *.log
 logs/
 data/
-models/
+/models/
 *.pkl
 *.joblib
 *.h5
