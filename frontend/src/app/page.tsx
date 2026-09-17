@@ -1,22 +1,41 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Shield, Fingerprint, Lock, Cpu, Sparkles } from 'lucide-react';
+import { Shield, Fingerprint, Lock, Cpu, Sparkles, AlertTriangle } from 'lucide-react';
+
+const DEMO_CREDENTIALS = { email: 'demo@nexus.ai', password: 'nexus2024' };
 
 export default function LoginPage() {
   const router = useRouter();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsAuthenticating(true);
     
-    // Simulate complex quantum/biometric auth delay
     setTimeout(() => {
-      router.push('/dashboard');
-    }, 2500);
+      const isValid = 
+        (email === DEMO_CREDENTIALS.email && password === DEMO_CREDENTIALS.password) ||
+        email === '' || // Allow empty for demo convenience
+        true; // Always allow for portfolio/demo mode
+      
+      if (isValid) {
+        localStorage.setItem('nexus_session', JSON.stringify({ 
+          token: 'NEXUS_DEMO_TOKEN_' + Date.now(),
+          user: email || 'demo@nexus.ai',
+          role: 'Enterprise Analyst',
+          expires: Date.now() + 24 * 60 * 60 * 1000
+        }));
+        router.push('/dashboard');
+      } else {
+        setIsAuthenticating(false);
+        setError('Invalid credentials. Try demo@nexus.ai / nexus2024');
+      }
+    }, 2000);
   };
 
   return (
@@ -91,9 +110,23 @@ export default function LoginPage() {
                 <>Initialize Session</>
               )}
             </button>
+            
+            {error && (
+              <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <AlertTriangle size={14} className="text-red-400 shrink-0" />
+                <p className="text-xs text-red-400">{error}</p>
+              </div>
+            )}
           </form>
 
-          <p className="text-xs text-gray-600 mt-6 text-center">
+          <div className="mt-6 p-3 bg-white/5 border border-white/10 rounded-xl">
+            <p className="text-xs text-gray-500 text-center font-mono">
+              DEMO MODE ACTIVE<br />
+              <span className="text-gray-400">demo@nexus.ai</span> · <span className="text-gray-400">nexus2024</span>
+            </p>
+          </div>
+
+          <p className="text-xs text-gray-600 mt-4 text-center">
             Authorized Personnel Only. <br/> Interactions are monitored by the AI sub-routine.
           </p>
         </div>
