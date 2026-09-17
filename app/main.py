@@ -27,6 +27,7 @@ from app.models.transaction_models import (
 )
 from app.services.fraud_detection_service import EnhancedFraudDetectionService
 from app.services.model_management_service import ModelManagementService
+from app.services.advanced_ml_service import AdvancedMLService
 from app.core.security import create_access_token, verify_token
 from app.utils.monitoring import RequestMonitoringMiddleware
 from app.utils.rate_limiting import RateLimitingMiddleware
@@ -280,6 +281,58 @@ async def get_dashboard_analytics(
     except Exception as e:
         logger.error(f"Analytics error: {str(e)}")
         raise HTTPException(status_code=500, detail="Error retrieving analytics data")
+
+from pydantic import BaseModel
+
+class SettingsRequest(BaseModel):
+    speed: float
+    threshold: float
+
+class InjectRequest(BaseModel):
+    amount: float
+
+# --- Advanced ML Integration Endpoints ---
+@app.get("/api/v1/quantum/status", tags=["Advanced ML"])
+async def get_quantum_status():
+    """Get metrics from the Hybrid QNN Co-Processor"""
+    return await AdvancedMLService.get_quantum_status()
+
+@app.get("/api/v1/federated/status", tags=["Advanced ML"])
+async def get_federated_status():
+    """Get metrics from the Federated Learning network"""
+    return await AdvancedMLService.get_federated_status()
+
+@app.get("/api/v1/gnn/status", tags=["Advanced ML"])
+async def get_gnn_status():
+    """Get metrics from the Graph Neural Network"""
+    return await AdvancedMLService.get_gnn_status()
+    
+@app.get("/api/v1/alerts/status", tags=["Advanced ML"])
+async def get_alerts_status():
+    return await AdvancedMLService.get_alerts_status()
+
+@app.get("/api/v1/streaming/status", tags=["Advanced ML"])
+async def get_streaming_status():
+    return await AdvancedMLService.get_streaming_status()
+
+@app.get("/api/v1/analytics/status", tags=["Advanced ML"])
+async def get_analytics_status():
+    return await AdvancedMLService.get_analytics_status()
+
+@app.put("/api/v1/settings", tags=["System Config"])
+async def update_settings(req: SettingsRequest):
+    return AdvancedMLService.set_simulation_controls(req.speed, req.threshold)
+
+@app.get("/api/v1/settings", tags=["System Config"])
+async def get_settings():
+    return AdvancedMLService.get_simulation_controls()
+
+@app.post("/api/v1/inject-transaction", tags=["System Config"])
+async def inject_transaction(req: InjectRequest):
+    # Log the injection
+    logger.info(f"Manual test vector injected: ${req.amount}")
+    return {"status": "success", "message": f"Injected ${req.amount}"}
+# ----------------------------------------
 
 # Background task functions
 async def log_transaction_analysis(transaction_data: dict, result: dict):

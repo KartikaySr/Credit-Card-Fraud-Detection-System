@@ -10,7 +10,7 @@ sqlalchemy==2.0.23
 alembic==1.13.1
 asyncpg==0.29.0
 redis==5.0.1
-databases[postgresql]==0.8.0
+databases[postgresql]>=0.9.0
 
 # Machine Learning Core
 pandas==2.1.4
@@ -19,9 +19,9 @@ scikit-learn==1.3.2
 joblib==1.3.2
 
 # ML Enhancement Libraries
-xgboost==2.0.3
-lightgbm==4.1.0
-catboost==1.2.2
+xgboost>=2.0.3
+lightgbm>=4.3.0
+catboost>=1.2.2
 optuna==3.5.0
 imbalanced-learn==0.11.0
 
@@ -49,3 +49,11 @@ python-dotenv==1.0.0
 tqdm==4.66.1
 pytest==7.4.3
 pytest-asyncio==0.21.1
+
+# Advanced ML Integration
+qiskit>=0.45.0
+pennylane>=0.33.0
+flwr>=1.5.0
+torch>=2.0.0
+torch-geometric>=2.3.0
+networkx>=3.0

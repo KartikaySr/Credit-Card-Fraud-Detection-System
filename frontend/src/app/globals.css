@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Notion Light Theme Variables */
+:root {
+  --background: #ffffff;
+  --foreground: #37352f;
+  --sidebar-bg: #f7f7f5;
+  --sidebar-hover: #efefe9;
+  --border-color: #e5e5e5;
+  --text-muted: #787774;
+  --card-bg: #ffffff;
+  --card-hover: #f9f9f8;
+  --highlight: #2383e2;
+  
+  /* Status Colors */
+  --status-red: #eb5757;
+  --status-red-bg: #ffebe9;
+  --status-green: #0f7b6c;
+  --status-green-bg: #e1f3f1;
+  --status-yellow: #d97706;
+  --status-yellow-bg: #fdf6e3;
+}
+
+/* Notion Dark Theme Variables (Optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #191919;
+    --foreground: #ffffff;
+    --sidebar-bg: #202020;
+    --sidebar-hover: #2f2f2f;
+    --border-color: #2f2f2f;
+    --text-muted: #9b9a97;
+    --card-bg: #191919;
+    --card-hover: #2f2f2f;
+    --highlight: #2383e2;
+
+    --status-red: #ff7369;
+    --status-red-bg: #4a2323;
+    --status-green: #2ea043;
+    --status-green-bg: #1b3823;
+    --status-yellow: #e3b341;
+    --status-yellow-bg: #4d3c19;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar Notion Style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d3d1cb;
+  border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background: #474c50;
+  }
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aeaca6;
+}
+
+/* Base utility classes for Notion look */
+.notion-card {
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.notion-card:hover {
+  background: var(--card-hover);
+}
+
+.notion-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.notion-button:hover {
+  background: var(--sidebar-hover);
+}
+
+/* Web3 Luxury Glassmorphic Aesthetic (Notion inspired) */
+.glass-card {
+  background: rgba(var(--background-rgb, 25, 25, 25), 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glass-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glass-table-header {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+/* Fix Scrollbar Overlap */
+.glass-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.glass-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.glass-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px;
+}
+.glass-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+.glass-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

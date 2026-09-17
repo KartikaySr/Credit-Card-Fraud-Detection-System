@@ -4,7 +4,8 @@ Configuration management for the fraud detection system
 
 import os
 from typing import List, Optional
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 
 class ApplicationSettings(BaseSettings):
@@ -90,10 +91,7 @@ class ApplicationSettings(BaseSettings):
     request_timeout: int = Field(default=30, env="REQUEST_TIMEOUT")
     worker_processes: int = Field(default=1, env="WORKER_PROCESSES")
     
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False)
 
 class DevelopmentSettings(ApplicationSettings):
     """Development environment specific settings"""

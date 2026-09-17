@@ -99,6 +99,14 @@ class FraudDetectionDashboard:
         except Exception as e:
             logger.warning(f"API call failed: {str(e)}, using mock data")
             return self._get_mock_data()
+
+    def _api_is_online(self) -> bool:
+        """Check if the FastAPI backend is reachable."""
+        try:
+            response = self.session.get(f"{self.api_base_url}/", timeout=3)
+            return response.status_code == 200
+        except Exception:
+            return False
     
     def _get_mock_data(self) -> Dict[str, Any]:
         """Generate mock analytics data for demonstration"""
@@ -143,8 +151,20 @@ class FraudDetectionDashboard:
                 st.error(f"API Error: {response.status_code} - {response.text}")
                 return None
         except Exception as e:
-            st.error(f"Error testing transaction: {str(e)}")
-            return None
+            st.warning("API offline — showing demo result.")
+            amount = float(transaction_data.get("amount", 0))
+            risk = min(95.0, max(5.0, amount / 200))
+            return {
+                "is_fraud": risk > 70,
+                "fraud_probability": risk / 100,
+                "risk_score": risk,
+                "confidence_level": "medium",
+                "processing_time_ms": 42.0,
+                "explanation": {
+                    "summary": "Demo mode: backend API not running. Start it with: uvicorn app.main:app --reload",
+                    "key_factors": [{"description": f"Transaction amount: ${amount:,.2f}"}],
+                },
+            }
     
     def render_header(self):
         """Render dashboard header"""
@@ -379,9 +399,12 @@ class FraudDetectionDashboard:
         
         # System status
         st.sidebar.subheader("📊 System Status")
-        st.sidebar.success("🟢 API: Online")
+        if self._api_is_online():
+            st.sidebar.success("🟢 API: Online")
+        else:
+            st.sidebar.info("🔵 Demo mode (no API)")
         st.sidebar.success("🟢 Models: Loaded")
-        st.sidebar.success("🟢 Cache: Connected")
+        st.sidebar.success("🟢 Dashboard: Ready")
         
         # Model info
         st.sidebar.subheader("🤖 Active Models")
@@ -425,10 +448,6 @@ class FraudDetectionDashboard:
         self.render_transaction_tester()
 
         st.caption("Built by Kartikay Srivastava · v1.0 · Dec 2025 – Jan 2026")
-        
-        # Auto-refresh
-        time.sleep(30)  # Refresh every 30 seconds
-        st.experimental_rerun()
 
 def main():
     """Main application entry point"""
