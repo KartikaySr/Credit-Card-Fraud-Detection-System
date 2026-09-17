@@ -4,10 +4,10 @@ Built by Kartikay Srivastava (December 2025 – January 2026)
 Production-ready API with modern architecture and best practices.
 """
 
-from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks, status
+from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks, status, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 import asyncio
 import logging
 from contextlib import asynccontextmanager
@@ -15,6 +15,8 @@ from typing import List, Optional, Dict, Any
 import os
 from datetime import datetime, timedelta
 import json
+import io
+import csv
 
 from app.core.config import get_application_settings
 from app.core.database import get_database_connection
@@ -28,6 +30,7 @@ from app.models.transaction_models import (
 from app.services.fraud_detection_service import EnhancedFraudDetectionService
 from app.services.model_management_service import ModelManagementService
 from app.services.advanced_ml_service import AdvancedMLService
+from app.services.copilot_service import CopilotService
 from app.core.security import create_access_token, verify_token
 from app.utils.monitoring import RequestMonitoringMiddleware
 from app.utils.rate_limiting import RateLimitingMiddleware
@@ -288,6 +291,9 @@ class SettingsRequest(BaseModel):
     speed: float
     threshold: float
 
+class ChatRequest(BaseModel):
+    message: str
+
 class InjectRequest(BaseModel):
     amount: float
 
@@ -319,6 +325,32 @@ async def get_streaming_status():
 async def get_analytics_status():
     return await AdvancedMLService.get_analytics_status()
 
+@app.websocket("/ws/stream")
+async def websocket_stream(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            # Broadcast live streaming status every second
+            data = await AdvancedMLService.get_streaming_status()
+            await websocket.send_json(data)
+            await asyncio.sleep(1)
+    except WebSocketDisconnect:
+        logger.info("Client disconnected from streaming websocket")
+        
+@app.get("/api/v1/export/csv", tags=["Analytics"])
+async def export_csv():
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["TransactionID", "Amount", "RiskScore", "Timestamp"])
+    # Simulated historical data for Phase 1
+    writer.writerow(["TXN-9021", 15000, 95.2, datetime.utcnow().isoformat()])
+    writer.writerow(["TXN-3291", 450, 12.1, datetime.utcnow().isoformat()])
+    writer.writerow(["TXN-4191", 200, 8.5, datetime.utcnow().isoformat()])
+    
+    response = StreamingResponse(iter([output.getvalue()]), media_type="text/csv")
+    response.headers["Content-Disposition"] = "attachment; filename=fraud_report.csv"
+    return response
+
 @app.put("/api/v1/settings", tags=["System Config"])
 async def update_settings(req: SettingsRequest):
     return AdvancedMLService.set_simulation_controls(req.speed, req.threshold)
@@ -332,6 +364,46 @@ async def inject_transaction(req: InjectRequest):
     # Log the injection
     logger.info(f"Manual test vector injected: ${req.amount}")
     return {"status": "success", "message": f"Injected ${req.amount}"}
+
+@app.post("/api/v1/copilot/chat", tags=["AI Copilot"])
+async def copilot_chat(req: ChatRequest):
+    return StreamingResponse(
+        CopilotService.generate_response_stream(req.message),
+        media_type="text/event-stream"
+    )
+
+@app.get("/api/v1/intelligence/darkweb", tags=["Threat Intelligence"])
+async def darkweb_stream():
+    """Streams simulated Dark Web OSINT findings (compromised emails/passwords)"""
+    import random
+    async def event_stream():
+        domains = ["gmail.com", "yahoo.com", "protonmail.ch", "corp.bank.com", "gov.ru"]
+        sources = ["Pastebin", "Tor Exit Node", "Ransomware Leak Site", "Genesis Market"]
+        while True:
+            await asyncio.sleep(random.uniform(0.5, 2.5))
+            compromised = f"{''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=6))}@{random.choice(domains)}"
+            payload = {
+                "timestamp": datetime.utcnow().isoformat(),
+                "source": random.choice(sources),
+                "compromised_identity": compromised,
+                "threat_level": random.choice(["HIGH", "CRITICAL", "MEDIUM"]),
+                "breach_hash": ''.join(random.choices('0123456789abcdef', k=12))
+            }
+            yield f"data: {json.dumps(payload)}\n\n"
+            
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+@app.post("/api/v1/intelligence/biometrics", tags=["Threat Intelligence"])
+async def analyze_biometrics():
+    """Simulates behavioral biometric scoring for a session"""
+    import random
+    return {
+        "bot_probability": random.uniform(0.01, 0.99),
+        "keystroke_anomaly_score": random.uniform(0, 100),
+        "mouse_velocity_variance": random.uniform(0, 50),
+        "verdict": "HUMAN" if random.random() > 0.3 else "BOT"
+    }
+
 # ----------------------------------------
 
 # Background task functions

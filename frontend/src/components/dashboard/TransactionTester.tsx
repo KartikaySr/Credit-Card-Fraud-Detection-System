@@ -10,16 +10,35 @@ export default function TransactionTester() {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate API call for the mockup
-    setTimeout(() => {
-      setResult({
-        is_fraud: Math.random() > 0.5,
-        risk_score: Math.random() * 100,
-        confidence_level: "High",
-        processing_time_ms: 42.5
+    try {
+      const form = e.target as HTMLFormElement;
+      const txId = (form.elements.namedItem('txId') as HTMLInputElement).value;
+      const amount = parseFloat((form.elements.namedItem('amount') as HTMLInputElement).value);
+      const merchantId = (form.elements.namedItem('merchantId') as HTMLInputElement).value;
+      const userId = (form.elements.namedItem('userId') as HTMLInputElement).value;
+
+      const payload = {
+        transaction_id: txId,
+        amount: amount,
+        merchant_id: merchantId,
+        user_id: userId,
+        transaction_type: "purchase"
+      };
+
+      const res = await fetch('http://localhost:8000/api/v1/detect-fraud', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
+      
+      const data = await res.json();
+      setResult(data);
+    } catch (err) {
+      console.error(err);
+      setResult({ is_fraud: false, risk_score: 0, confidence_level: 'Error connecting to API', processing_time_ms: 0 });
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   return (
@@ -34,6 +53,7 @@ export default function TransactionTester() {
                 <label className="block text-sm font-medium text-[var(--text-muted)] mb-1">Transaction ID</label>
                 <input 
                   type="text" 
+                  name="txId"
                   defaultValue={`TXN-${Date.now().toString().slice(-6)}`}
                   className="w-full bg-transparent border border-[var(--border-color)] rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[var(--highlight)] transition-colors"
                 />
@@ -42,6 +62,7 @@ export default function TransactionTester() {
                 <label className="block text-sm font-medium text-[var(--text-muted)] mb-1">Amount ($)</label>
                 <input 
                   type="number" 
+                  name="amount"
                   defaultValue="150.00"
                   className="w-full bg-transparent border border-[var(--border-color)] rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[var(--highlight)] transition-colors"
                 />
@@ -53,6 +74,7 @@ export default function TransactionTester() {
                 <label className="block text-sm font-medium text-[var(--text-muted)] mb-1">Merchant ID</label>
                 <input 
                   type="text" 
+                  name="merchantId"
                   defaultValue="MERCH-001"
                   className="w-full bg-transparent border border-[var(--border-color)] rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[var(--highlight)] transition-colors"
                 />
@@ -61,6 +83,7 @@ export default function TransactionTester() {
                 <label className="block text-sm font-medium text-[var(--text-muted)] mb-1">User ID</label>
                 <input 
                   type="text" 
+                  name="userId"
                   defaultValue="USER-001"
                   className="w-full bg-transparent border border-[var(--border-color)] rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[var(--highlight)] transition-colors"
                 />

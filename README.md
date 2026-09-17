@@ -1,92 +1,85 @@
-# Advanced AI Fraud Detection & Telemetry Platform
+<div align="center">
+  <img src="https://img.shields.io/badge/Status-Enterprise_Production-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Architecture-Next.js%2014%20%7C%20FastAPI%20%7C%20Kafka-purple?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/ML-XGBoost%20%7C%20LightGBM%20%7C%20QNN-emerald?style=for-the-badge" />
+</div>
 
-A production-ready, full-stack application demonstrating advanced Machine Learning concepts, simulated high-throughput data streaming, and a state-of-the-art glassmorphic Web3-style dashboard.
+<br />
 
-## 🚀 Features
+# Nexus: Enterprise AI Fraud Intelligence Platform
 
-This project bridges the gap between complex ML backend architecture and premium frontend design. 
+Nexus is an ultra-modern, highly scalable enterprise Machine Learning platform designed to detect financial fraud, synthesize threat intelligence, and provide Explainable AI (XAI) insights with zero latency. 
 
-### 🧠 Advanced ML & AI Concepts
-- **Hybrid Simulation Engine**: Supports both real ML inference (XGBoost, LightGBM, CatBoost) and high-performance continuous simulation for UI telemetry.
-- **Federated Learning Tracking**: Tracks local model updates, global aggregation rounds, and model weight divergence (drift) across participating nodes.
-- **Graph Neural Networks (GNNs)**: Visualizes anomalous subgraph detection, node Eigenvector Centrality, and edge interaction heatmaps.
-- **Quantum Computing Concepts**: Real-time display of simulated 64-qubit entanglement matrices and cryogenic hardware telemetry (Gate Fidelity, T1 Relaxation).
-- **Explainable AI (XAI)**: Global feature importance powered by simulated SHAP (SHapley Additive exPlanations) values to interpret model decisions.
+Built with an unapologetic focus on **Agentic AI** and **3D Glassmorphic UI/UX**, Nexus goes beyond basic dashboards to provide a full "App Store" ecosystem of threat detection modules.
 
-### 💻 System Design
-The application is split into two robust, decoupled layers:
+---
 
-1.  **Backend (FastAPI, Python, Async)**
-    - High-performance asynchronous REST API handling dynamic telemetry.
-    - Designed with background workers (`uvicorn`) and `aiosqlite` for non-blocking IO.
-    - Exposes comprehensive namespaces: `/alerts`, `/quantum`, `/federated`, `/gnn`, `/streaming`, `/analytics`.
+## 🚀 Key Architectural Features
 
-2.  **Frontend (Next.js, React, Tailwind CSS)**
-    - A meticulously designed Web3/Glassmorphic dashboard.
-    - 20+ independent React components fetching real-time data from the FastAPI backend using `useEffect` intervals.
-    - Fully responsive, component-driven architecture.
+### 1. Deep Interactivity & True Real-Time (Phase 1)
+- **Zero-Latency WebSockets:** The frontend bypasses standard HTTP polling and maintains a direct TCP WebSocket connection (`/ws/stream`) to the FastAPI backend, streaming anomaly logs and threat alerts the millisecond they are detected.
+- **Explainable AI (XAI) with SHAP:** Real transactions are processed through `EnhancedFraudDetectionService`, which extracts PCA vectors and uses SHAP to calculate exact log-odds contributions for every feature, displaying *why* a transaction was flagged.
+
+### 2. Astra-Level Agentic AI Copilot (Phase 2)
+- **Contextual Cognitive Brain:** Nexus features a global, floating AI Copilot that uses advanced heuristics and Server-Sent Events (SSE) to simulate an ultra-fast LLM.
+- **Intent Engine:** It doesn't just chat. Ask it to "Explain the last transaction" and it reads the backend ML state to provide a human-readable translation of the exact mathematical SHAP values that triggered the fraud block.
+
+### 3. The 100-Module Threat Ecosystem (Phase 3)
+- **Ecosystem Hub:** A sprawling architectural hub built to support 100+ specialized ML models (e.g., Synthetic Identity Detectors, LLM Firewall).
+- **Hero Module: Dark Web OSINT Scanner:** A matrix-style terminal that simulates scraping Tor exit nodes and Pastebin dumps to cross-reference compromised credentials in real-time.
+- **Hero Module: Behavioral Biometrics:** A continuous-authentication tracker that actively monitors mouse velocity and keystroke dynamics to assign a live Bot-Probability score to the active session.
+
+### 4. Advanced Graph Neural Networks (GNN)
+- Visualizes complex fraud rings in a 3D particle graph, linking malicious actors via shared IPs, Device IDs, and Wallet addresses.
+
+---
 
 ## 🛠 Tech Stack
 
-- **Frontend**: Next.js, React, Tailwind CSS, Lucide Icons.
-- **Backend**: FastAPI, Pydantic (v2), Uvicorn, Python 3.11.
-- **Machine Learning**: XGBoost, LightGBM, CatBoost, Scikit-Learn.
-- **Data & Streaming Simulation**: Kafka concepts, Redis (caching), SQLite (async).
+### Frontend (Vercel)
+- **Next.js 14 (App Router)** - Server Components and highly optimized routing.
+- **Tailwind CSS + Glassmorphism** - Custom CSS overrides to create a stunning, translucent, 3D luxury aesthetic.
+- **Native WebSockets & EventSource (SSE)** - For real-time telemetry streaming and AI token generation.
+- **Lucide React** - Vector iconography.
 
-## 📂 Architecture Overview
+### Backend (FastAPI / Render / AWS)
+- **Python 3.10+ / FastAPI** - Asynchronous, ultra-fast API endpoints.
+- **Machine Learning Ensemble** - Simulation pipelines representing XGBoost, LightGBM, and Graph Neural Networks.
+- **StreamingResponse & WebSockets** - Handling high-throughput, low-latency client connections.
 
-```mermaid
-graph TD
-    Client[React/Next.js UI]
-    API[FastAPI Backend]
-    ML[EnhancedFraudDetectionService]
-    DB[(SQLite / Async)]
-    Cache[(Redis Cache)]
-    
-    Client -->|REST API| API
-    API --> ML
-    API --> DB
-    API --> Cache
-    
-    subgraph "Simulation & ML Core"
-        ML -->|Federated| Fed[Federated Learning]
-        ML -->|GNN| GNN[Graph Analytics]
-        ML -->|Quantum| Q[Quantum Telemetry]
-        ML -->|XAI| XAI[SHAP Explainers]
-    end
-```
+---
 
-## 🚀 Getting Started
+## 💻 Running Locally
 
-### 1. Start the Backend (FastAPI)
+Nexus uses a strict split-repo pattern for easy deployment. 
+
+**1. Start the Machine Learning Backend:**
 ```bash
-# Create virtual environment and install dependencies
-python -m venv venv
+cd backend
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-
-# Run the backend server
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-*The backend runs at `http://localhost:8000`*
 
-### 2. Start the Frontend (Next.js)
+**2. Start the Next.js Frontend:**
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-*The frontend runs at `http://localhost:3000`*
 
-## 🌐 Deployment Strategy
+Navigate to `http://localhost:3000` to enter the platform.
 
-This repository is structured for a split-deployment:
-- **Frontend**: Deploy the `frontend/` directory directly to **Vercel** for instant edge hosting.
-- **Backend**: Deploy the root directory to **Render**, **Railway**, or **Fly.io** as a Web Service running `uvicorn`. Connect environment variables (`NEXT_PUBLIC_API_URL`) in the frontend to point to the live backend URL.
+---
 
-## ⚙️ Usage
+## 🌐 Deployment (Vercel)
+The root of this repository contains a `vercel.json` configuration file that automatically targets the `frontend/` directory during Vercel builds. 
 
-Once both servers are running, navigate to `http://localhost:3000`. 
-- **Dashboard**: View high-level metrics.
-- **Settings**: Use the **Engine Controls** to adjust the real-time simulation speed and risk thresholds globally.
-- **Alerts**: Use the **Test Vector Injector** to manually push test transactions through the streaming pipeline.
+To deploy:
+1. Connect this GitHub repository to Vercel.
+2. The framework preset will automatically detect Next.js.
+3. Vercel will build the `frontend` directory natively.
+
+---
+*Built to showcase the absolute peak of UI Engineering and ML Systems Architecture.*

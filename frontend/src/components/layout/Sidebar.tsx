@@ -26,26 +26,27 @@ export default function Sidebar() {
           <div className="px-3 text-xs font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest">
             Overview
           </div>
-          <SidebarItem href="/" icon={<Home size={18} />} label="Dashboard" active={pathname === '/'} />
-          <SidebarItem href="/alerts" icon={<AlertCircle size={18} />} label="Alerts & Transactions" active={pathname === '/alerts'} />
-          <SidebarItem href="/analytics" icon={<BarChart2 size={18} />} label="AI Analytics (SHAP)" active={pathname === '/analytics'} />
+          <SidebarItem href="/dashboard" icon={<Home size={18} />} label="Dashboard" active={pathname === '/dashboard'} />
+          <SidebarItem href="/dashboard/alerts" icon={<AlertCircle size={18} />} label="Alerts & Transactions" active={pathname === '/dashboard/alerts'} />
+          <SidebarItem href="/dashboard/analytics" icon={<BarChart2 size={18} />} label="AI Analytics (SHAP)" active={pathname === '/dashboard/analytics'} />
         </div>
 
         <div>
           <div className="px-3 text-xs font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest">
             Advanced Models
           </div>
-          <SidebarItem href="/quantum" icon={<Cpu size={18} />} label="Quantum QNN" active={pathname === '/quantum'} />
-          <SidebarItem href="/federated" icon={<ShieldCheck size={18} />} label="Federated Learning" active={pathname === '/federated'} />
-          <SidebarItem href="/gnn" icon={<Network size={18} />} label="Graph Neural Nets" active={pathname === '/gnn'} />
-          <SidebarItem href="/streaming" icon={<Zap size={18} />} label="Live Streaming" active={pathname === '/streaming'} />
+          <SidebarItem href="/dashboard/ecosystem" icon={<Network size={18} />} label="Module Ecosystem" active={pathname.startsWith('/dashboard/ecosystem')} />
+          <SidebarItem href="/dashboard/quantum" icon={<Cpu size={18} />} label="Quantum QNN" active={pathname === '/dashboard/quantum'} />
+          <SidebarItem href="/dashboard/federated" icon={<ShieldCheck size={18} />} label="Federated Learning" active={pathname === '/dashboard/federated'} />
+          <SidebarItem href="/dashboard/gnn" icon={<Network size={18} />} label="Graph Neural Nets" active={pathname === '/dashboard/gnn'} />
+          <SidebarItem href="/dashboard/streaming" icon={<Zap size={18} />} label="Live Streaming" active={pathname === '/dashboard/streaming'} />
         </div>
 
         <div>
           <div className="px-3 text-xs font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest">
             Configuration
           </div>
-          <SidebarItem href="/settings" icon={<Settings2 size={18} />} label="System Config" active={pathname === '/settings'} />
+          <SidebarItem href="/dashboard/settings" icon={<Settings2 size={18} />} label="System Config" active={pathname === '/dashboard/settings'} />
         </div>
       </div>
     </aside>

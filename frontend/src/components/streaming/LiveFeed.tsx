@@ -5,16 +5,35 @@ export default function LiveFeed() {
   const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchStream = async () => {
-      try {
-        const res = await fetch('http://localhost:8000/api/v1/streaming/status');
-        const json = await res.json();
-        if (json.logs) setLogs(json.logs);
-      } catch (err) {}
+    let ws: WebSocket;
+    
+    const connect = () => {
+      ws = new WebSocket('ws://localhost:8000/ws/stream');
+      
+      ws.onmessage = (event) => {
+        try {
+          const json = JSON.parse(event.data);
+          if (json.logs) setLogs(json.logs);
+        } catch (err) {
+          console.error('Failed to parse websocket message', err);
+        }
+      };
+      
+      ws.onerror = (error) => {
+        console.error('WebSocket Error', error);
+      };
+
+      ws.onclose = () => {
+        // Reconnect after 3 seconds
+        setTimeout(connect, 3000);
+      };
     };
-    fetchStream();
-    const interval = setInterval(fetchStream, 1500);
-    return () => clearInterval(interval);
+
+    connect();
+
+    return () => {
+      if (ws) ws.close();
+    };
   }, []);
 
   return (

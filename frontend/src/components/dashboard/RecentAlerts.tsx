@@ -10,12 +10,17 @@ export default function RecentAlerts({ alerts }: { alerts: any[] | undefined }) 
           <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400 tracking-wide">
             Recent Alerts
           </h3>
-          <div className="flex items-center space-x-2">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-            </span>
-            <span className="text-xs text-gray-400 uppercase tracking-widest font-semibold">Live Feed</span>
+          <div className="flex items-center space-x-4">
+            <a href="http://localhost:8000/api/v1/export/csv" download="fraud_report.csv" className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-xs font-semibold text-gray-300 transition-colors">
+              Export CSV
+            </a>
+            <div className="flex items-center space-x-2">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+              </span>
+              <span className="text-xs text-gray-400 uppercase tracking-widest font-semibold">Live Feed</span>
+            </div>
           </div>
         </div>
 
