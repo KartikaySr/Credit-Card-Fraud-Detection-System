@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { ShieldCheck, BarChart2, AlertCircle, Settings2, Home, Cpu, Network, Zap, TrendingDown, LogOut, LayoutGrid } from 'lucide-react';
+import { ShieldCheck, BarChart2, AlertCircle, Settings2, Home, Cpu, Network, Zap, TrendingDown, LogOut, LayoutGrid, FileKey } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -34,6 +34,7 @@ export default function Sidebar() {
           </div>
           <SidebarItem href="/dashboard" icon={<Home size={18} />} label="Dashboard" active={pathname === '/dashboard'} />
           <SidebarItem href="/dashboard/alerts" icon={<AlertCircle size={18} />} label="Alerts & Transactions" active={pathname === '/dashboard/alerts'} />
+          <SidebarItem href="/dashboard/audit" icon={<FileKey size={18} />} label="Cryptographic Audit Log" active={pathname === '/dashboard/audit'} />
           <SidebarItem href="/dashboard/analytics" icon={<BarChart2 size={18} />} label="AI Analytics (SHAP)" active={pathname === '/dashboard/analytics'} />
           <SidebarItem href="/dashboard/drift" icon={<TrendingDown size={18} />} label="Drift Monitor" active={pathname === '/dashboard/drift'} badge="MLOps" />
         </div>

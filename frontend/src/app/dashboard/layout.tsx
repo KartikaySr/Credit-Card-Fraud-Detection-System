@@ -4,6 +4,8 @@ import "../globals.css";
 import Sidebar from "@/components/layout/Sidebar";
 import CopilotWidget from "@/components/copilot/CopilotWidget";
 import AuthGuard from "@/components/layout/AuthGuard";
+import CommandPalette from "@/components/layout/CommandPalette";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +22,10 @@ export default function DashboardLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} flex h-screen overflow-hidden relative`}>
+        <Toaster theme="dark" position="bottom-right" />
         <AuthGuard>
           <Sidebar />
+          <CommandPalette />
           <main className="flex-1 overflow-y-auto bg-[var(--background)]">
             <div className="max-w-5xl mx-auto px-12 py-16">
               {children}

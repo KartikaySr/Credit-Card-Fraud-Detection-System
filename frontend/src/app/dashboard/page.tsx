@@ -10,7 +10,10 @@ import FeatureImportance from '@/components/dashboard/FeatureImportance';
 import QuantumState from '@/components/dashboard/QuantumState';
 import FederatedLearning from '@/components/dashboard/FederatedLearning';
 import GraphNetwork from '@/components/dashboard/GraphNetwork';
+import HistoricalAlertsTable from '@/components/alerts/HistoricalAlertsTable';
+import GeoHeatmap from '@/components/dashboard/GeoHeatmap';
 import { Play, Loader2, CheckCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Dashboard() {
   const [data, setData] = useState<any>(null);
@@ -78,12 +81,28 @@ export default function Dashboard() {
     const steps = ['Seeding 500 synthetic transactions...', 'Injecting 12 fraud vectors...', 'Running ensemble inference...', 'Updating KPIs...', 'Done!'];
     for (const step of steps) {
       setDemoStatus(step);
+      if (step === 'Injecting 12 fraud vectors...') {
+        toast.error('Critical Fraud Alert: 12 vectors injected in SE Asia node', {
+          description: 'Model drifted past threshold (z-score > 3.0)',
+          duration: 5000
+        });
+      }
       await new Promise(r => setTimeout(r, 800));
     }
-    await fetchDashboardData();
-    await new Promise(r => setTimeout(r, 800));
+    
+    // Simulate updating the data with new fraud
+    setData((prev: any) => ({
+      ...prev,
+      transactions_processed: prev.transactions_processed + 500,
+      fraud_detected: prev.fraud_detected + 12,
+      fraud_rate: Number(((prev.fraud_detected + 12) / (prev.transactions_processed + 500) * 100).toFixed(2)),
+      recent_alerts: [
+        { id: `TXN-${Math.floor(Math.random()*10000)}`, amount: 45000, risk_score: 99.8, timestamp: new Date().toISOString() },
+        ...prev.recent_alerts
+      ]
+    }));
+    toast.success('System updated with Live Feed metrics');
     setDemoRunning(false);
-    setDemoStatus('');
   };
 
   return (
@@ -135,6 +154,14 @@ export default function Dashboard() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <ModelPerformance data={data?.model_performance} />
           <FeatureImportance data={data?.feature_importance} />
+        </section>
+
+        <section>
+          <GeoHeatmap />
+        </section>
+
+        <section>
+          <HistoricalAlertsTable />
         </section>
 
         {/* AI & Quantum Insights Section */}
