@@ -44,15 +44,24 @@ const EXTRA_MODULE_NAMES = [
   "Social Engineering Scorer", "Malware Signature Matcher", "VPN/Proxy Unmasker"
 ];
 
-const generatedModules = Array.from({ length: 97 }).map((_, i) => ({
-  id: `mod-${i}`,
-  name: EXTRA_MODULE_NAMES[i % EXTRA_MODULE_NAMES.length] + ` v${Math.floor(Math.random()*5)+1}.${Math.floor(Math.random()*9)}`,
-  description: 'Enterprise grade ML model for specialized fraud vectors.',
-  icon: <ShieldAlert className="text-gray-500 w-6 h-6" />,
-  href: '#',
-  status: 'LOCKED (PHASE 4)',
-  color: 'from-gray-800/20 to-gray-900/40'
-}));
+const generatedModules = Array.from({ length: 97 }).map((_, i) => {
+  const isUnlocked = i < 15;
+  const modId = `mod-${i}`;
+  const vMajor = (i * 7) % 5 + 1;
+  const vMinor = (i * 11) % 9;
+  const nodeHex = ((i * 31337) ^ 0xDEADBEEF).toString(16).toUpperCase().substring(0, 8);
+  
+  return {
+    id: modId,
+    name: EXTRA_MODULE_NAMES[i % EXTRA_MODULE_NAMES.length] + ` v${vMajor}.${vMinor}`,
+    description: 'Enterprise grade ML model for specialized fraud vectors.',
+    icon: <ShieldAlert className={isUnlocked ? "text-indigo-400 w-6 h-6" : "text-gray-500 w-6 h-6"} />,
+    href: isUnlocked ? `/dashboard/ecosystem/${modId}` : '/dashboard/ecosystem/coming-soon',
+    status: isUnlocked ? 'ACTIVE' : 'LOCKED (PHASE 4)',
+    color: isUnlocked ? 'from-indigo-500/20 to-blue-900/40' : 'from-gray-800/20 to-gray-900/40',
+    nodeId: nodeHex
+  };
+});
 
 const ALL_MODULES = [...HERO_MODULES, ...generatedModules];
 
@@ -74,7 +83,7 @@ export default function EcosystemPage() {
           <Link 
             key={i} 
             href={mod.href}
-            className={`group relative grids-card p-6 rounded-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:scale-[1.02] ${mod.href !== '#' ? 'hover:border-gold/30 hover:shadow-[0_0_30px_rgba(230,197,82,0.15)]' : 'opacity-70 grayscale hover:grayscale-0'}`}
+            className={`group relative grids-card p-6 rounded-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:scale-[1.02] ${mod.status === 'ACTIVE' ? 'hover:border-gold/30 hover:shadow-[0_0_30px_rgba(230,197,82,0.15)]' : 'opacity-70 grayscale hover:grayscale-0'}`}
           >
             {/* Background Gradient */}
             <div className={`absolute inset-0 bg-gradient-to-br ${mod.color} opacity-50 z-0 transition-opacity group-hover:opacity-100`}></div>
@@ -84,7 +93,7 @@ export default function EcosystemPage() {
                 <div className="p-3 bg-black/40 rounded-xl border border-white/10 backdrop-blur-md">
                   {mod.icon}
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-1 rounded-full border ${mod.status === 'ACTIVE' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-gray-500/20 text-gray-400 border-gray-500/30'}`}>
+                <span className={`text-[10px] font-bold px-2 py-1 rounded-full border ${mod.status === 'ACTIVE' ? (i < 15 && mod.id.startsWith('mod-') ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30' : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30') : 'bg-gray-500/20 text-gray-400 border-gray-500/30'}`}>
                   {mod.status}
                 </span>
               </div>
@@ -93,8 +102,8 @@ export default function EcosystemPage() {
               <p className="text-sm text-gray-400 flex-grow">{mod.description}</p>
               
               <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
-                <span className="text-xs text-gray-500">Node ID: {Math.random().toString(36).substring(2, 10).toUpperCase()}</span>
-                {mod.href !== '#' && (
+                <span className="text-xs text-gray-500">Node ID: {(mod as any).nodeId || Math.random().toString(36).substring(2, 10).toUpperCase()}</span>
+                {mod.status === 'ACTIVE' && (
                   <span className="text-xs font-semibold text-gold group-hover:text-gold-light flex items-center gap-1">
                     Initialize <Zap className="w-3 h-3" />
                   </span>
