@@ -4,12 +4,23 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 export default function TransactionTrends({ data }: { data: any[] | undefined }) {
-  if (!data) return <div className="animate-pulse h-64 bg-[var(--sidebar-hover)] rounded-md mt-6"></div>;
+  if (!data) return (
+    <div className="mt-8 mb-8">
+      <h3 className="text-lg font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Transaction Trends</h3>
+      <div className="grids-card p-4 h-[350px] animate-pulse flex flex-col justify-center items-center">
+        <div className="w-full h-full border-b border-l border-white/5 flex items-end gap-2 px-4 pb-4">
+          {[1,2,3,4,5,6,7].map(i => (
+            <div key={i} className="flex-1 bg-white/5 rounded-t-sm" style={{ height: `${Math.max(20, Math.random() * 80)}%` }}></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="mt-8 mb-8">
-      <h3 className="text-lg font-semibold mb-4">Transaction Trends</h3>
-      <div className="notion-card p-4 h-[350px]">
+      <h3 className="text-lg font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Transaction Trends</h3>
+      <div className="grids-card p-4 h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border-color)" />

@@ -20,7 +20,7 @@ export default function SimulationControls() {
   const handleSave = async () => {
     setStatus('Saving...');
     try {
-      const res = await fetch('http://localhost:8000/api/v1/settings', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sim_speed: speed, risk_threshold: threshold })
@@ -37,14 +37,14 @@ export default function SimulationControls() {
   };
 
   return (
-    <div className="glass-card p-6 col-span-1 md:col-span-2">
+    <div className="grids-card p-6 col-span-1 md:col-span-2">
       <h3 className="text-xl font-bold text-gray-200 mb-6">Engine Controls</h3>
       
       <div className="space-y-8">
         <div>
           <div className="flex justify-between mb-2">
             <label className="text-sm text-gray-400 font-semibold">Simulation Speed Multiplier</label>
-            <span className="text-blue-400 font-mono">{speed}x</span>
+            <span className="text-gold font-mono">{speed}x</span>
           </div>
           <input 
             type="range" 
@@ -53,14 +53,14 @@ export default function SimulationControls() {
             step="0.1" 
             value={speed}
             onChange={(e) => setSpeed(parseFloat(e.target.value))}
-            className="w-full accent-blue-500"
+            className="w-full accent-gold"
           />
         </div>
 
         <div>
           <div className="flex justify-between mb-2">
             <label className="text-sm text-gray-400 font-semibold">Global Risk Threshold</label>
-            <span className="text-rose-400 font-mono">{threshold.toFixed(2)}</span>
+            <span className="text-emerald-400 font-mono">{threshold.toFixed(2)}</span>
           </div>
           <input 
             type="range" 
@@ -69,7 +69,7 @@ export default function SimulationControls() {
             step="0.01" 
             value={threshold}
             onChange={(e) => setThreshold(parseFloat(e.target.value))}
-            className="w-full accent-rose-500"
+            className="w-full accent-emerald-500"
           />
         </div>
 

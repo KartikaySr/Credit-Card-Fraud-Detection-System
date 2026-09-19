@@ -7,7 +7,7 @@ export default function QuantumState() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/quantum/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/quantum/status`);
         const json = await res.json();
         setData(json);
       } catch (e) {
@@ -20,27 +20,29 @@ export default function QuantumState() {
   }, []);
 
   if (!data) return (
-    <div className="notion-card p-6 bg-gradient-to-br from-[var(--card-bg)] to-[var(--sidebar-hover)] min-h-[200px] flex items-center justify-center animate-pulse">
-      <span className="text-[var(--text-muted)]">Booting QNN Co-Processor...</span>
+    <div className="grids-card p-6 min-h-[200px] flex items-center justify-center animate-pulse">
+      <span className="text-gray-400">Booting QNN Co-Processor...</span>
     </div>
   );
 
   return (
-    <div className="notion-card p-6 bg-gradient-to-br from-[var(--card-bg)] to-[var(--sidebar-hover)]">
-      <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">⚛️ Quantum State</h3>
-      <p className="text-sm text-[var(--text-muted)] mb-4">{data.processor}</p>
+    <div className="grids-card p-6 h-full">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-yellow-200 mb-2 flex items-center gap-2">
+        ⚛️ Quantum State
+      </h3>
+      <p className="text-sm text-gray-400 mb-4">{data.processor}</p>
       <div className="space-y-4">
         <div className="flex justify-between items-center text-sm">
-          <span>Qubits Active</span>
-          <span className="font-semibold text-[var(--highlight)]">{data.metrics.qubits_active}</span>
+          <span className="text-gray-300">Qubits Active</span>
+          <span className="font-mono text-gold-light">{data.metrics.qubits_active}</span>
         </div>
         <div className="flex justify-between items-center text-sm">
-          <span>Entanglement Coherence</span>
-          <span className="font-semibold text-[var(--status-green)]">{data.metrics.entanglement_coherence}</span>
+          <span className="text-gray-300">Entanglement Coherence</span>
+          <span className="font-mono text-emerald-400">{data.metrics.entanglement_coherence}</span>
         </div>
         <div className="flex justify-between items-center text-sm">
-          <span>Quantum Advantage</span>
-          <span className="font-semibold">{data.metrics.quantum_advantage}</span>
+          <span className="text-gray-300">Quantum Advantage</span>
+          <span className="font-mono text-gray-200">{data.metrics.quantum_advantage}</span>
         </div>
       </div>
     </div>

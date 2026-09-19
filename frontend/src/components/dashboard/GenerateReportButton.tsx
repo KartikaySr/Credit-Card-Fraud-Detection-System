@@ -32,7 +32,16 @@ export default function GenerateReportButton() {
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      
+      let finalWidth = pdfWidth;
+      let finalHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      // If the dashboard is taller than the A4 page (minus margins), scale it down
+      if (finalHeight > pageHeight - 30) {
+        finalHeight = pageHeight - 30;
+        finalWidth = (canvas.width * finalHeight) / canvas.height;
+      }
 
       // Add a header
       pdf.setFontSize(22);
@@ -44,8 +53,9 @@ export default function GenerateReportButton() {
       pdf.setFontSize(10);
       pdf.text(`Generated: ${new Date().toLocaleString()}`, pdfWidth - 60, 14);
 
-      // Add the screenshot
-      pdf.addImage(imgData, 'JPEG', 0, 25, pdfWidth, pdfHeight);
+      // Add the screenshot centered horizontally if scaled down
+      const xOffset = (pdfWidth - finalWidth) / 2;
+      pdf.addImage(imgData, 'JPEG', xOffset, 25, finalWidth, finalHeight);
 
       // Save the PDF
       pdf.save(`Nexus_Threat_Report_${new Date().getTime()}.pdf`);

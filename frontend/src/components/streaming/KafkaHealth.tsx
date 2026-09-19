@@ -8,7 +8,7 @@ export default function KafkaHealth() {
   useEffect(() => {
     const fetchStream = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/streaming/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/streaming/status`);
         const json = await res.json();
         if (json.kafka_health) setHealth(json.kafka_health);
       } catch (err) {}
@@ -19,7 +19,7 @@ export default function KafkaHealth() {
   }, []);
 
   return (
-    <div className="glass-card p-6 h-full flex flex-col">
+    <div className="grids-card p-6 h-full flex flex-col">
       <h3 className="text-lg font-bold text-gray-200 mb-6">Cluster Health</h3>
       
       <div className="flex-1 space-y-6">

@@ -7,7 +7,7 @@ export default function EdgeHeatmap() {
   useEffect(() => {
     const fetchGNN = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/gnn/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/gnn/status`);
         const json = await res.json();
         if (json.edge_heatmap) setHeatmap(json.edge_heatmap);
       } catch (err) {}

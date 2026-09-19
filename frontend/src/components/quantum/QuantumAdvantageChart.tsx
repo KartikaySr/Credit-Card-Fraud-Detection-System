@@ -3,8 +3,8 @@ import React from 'react';
 
 export default function QuantumAdvantageChart() {
   return (
-    <div className="glass-card p-6 h-full min-h-[350px] flex flex-col relative overflow-hidden">
-      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400 mb-2">
+    <div className="grids-card p-6 h-full min-h-[350px] flex flex-col relative overflow-hidden">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-yellow-200 mb-2">
         Quantum vs Classical AUC Advantage
       </h3>
       <p className="text-sm text-gray-400 mb-6">Comparing performance of QNN vs LightGBM base models.</p>
@@ -36,8 +36,8 @@ export default function QuantumAdvantageChart() {
           
           <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#c084fc" />
-              <stop offset="100%" stopColor="#818cf8" />
+              <stop offset="0%" stopColor="#e6c552" />
+              <stop offset="100%" stopColor="#efcd55" />
             </linearGradient>
           </defs>
         </svg>
@@ -45,7 +45,7 @@ export default function QuantumAdvantageChart() {
       
       <div className="flex gap-6 mt-4">
         <div className="flex items-center gap-2 text-sm">
-          <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+          <div className="w-3 h-3 rounded-full bg-gold"></div>
           <span className="text-gray-300">Hybrid QNN (AUC 0.992)</span>
         </div>
         <div className="flex items-center gap-2 text-sm">

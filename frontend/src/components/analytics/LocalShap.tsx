@@ -4,8 +4,8 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 export default function LocalShap() {
   return (
-    <div className="glass-card p-6">
-      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-amber-600 mb-2">
+    <div className="grids-card p-6">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-gold to-yellow-200 mb-2">
         Local SHAP Explanation
       </h3>
       <p className="text-sm text-gray-400 mb-6">Waterfall plot explaining why TXN-9021 was flagged as high risk (Score 99.1).</p>

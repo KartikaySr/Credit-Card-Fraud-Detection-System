@@ -35,6 +35,27 @@ const generateGraphData = () => {
 export default function ForceGraph() {
   const fgRef = useRef<any>();
   const [data] = useState(generateGraphData());
+  const [dimensions, setDimensions] = useState({ width: 600, height: 400 });
+
+  useEffect(() => {
+    // Initial size
+    if (typeof window !== 'undefined') {
+      setDimensions({
+        width: window.innerWidth > 1024 ? 600 : (window.innerWidth - 64),
+        height: 400
+      });
+      
+      const handleResize = () => {
+        setDimensions({
+          width: window.innerWidth > 1024 ? 600 : (window.innerWidth - 64),
+          height: 400
+        });
+      };
+      
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   useEffect(() => {
     // Make graph fit to container and gently rotate
@@ -56,8 +77,8 @@ export default function ForceGraph() {
       nodeRelSize={4}
       linkColor={() => 'rgba(255,255,255,0.2)'}
       backgroundColor="#00000000"
-      width={typeof window !== 'undefined' ? (window.innerWidth > 1024 ? 600 : 350) : 600}
-      height={400}
+      width={dimensions.width}
+      height={dimensions.height}
       onNodeClick={(node: any) => {
         // Center/zoom on node
         fgRef.current.centerAt(node.x, node.y, 1000);

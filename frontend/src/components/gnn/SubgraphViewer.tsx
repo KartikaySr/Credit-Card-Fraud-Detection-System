@@ -14,8 +14,8 @@ const DynamicForceGraph = dynamic(() => import('./ForceGraph'), {
 
 export default function SubgraphViewer() {
   return (
-    <div className="glass-card p-6 h-[500px] flex flex-col relative overflow-hidden group">
-      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500 mb-2 z-10">
+    <div className="grids-card p-6 h-[500px] flex flex-col relative overflow-hidden group">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-yellow-200 mb-2 z-10">
         Fraud Ring Topology
       </h3>
       <p className="text-sm text-gray-400 mb-4 z-10">Interactive D3 Force-Directed Graph of identified attack vectors. Scroll to zoom, drag to pan.</p>

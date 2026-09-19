@@ -14,42 +14,49 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[260px] h-full bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col transition-colors duration-200">
+    <aside className="w-[280px] h-[calc(100vh-2rem)] my-4 ml-4 nexus-glass flex flex-col transition-all duration-300 z-10">
       {/* Brand Header */}
-      <div className="p-6 flex items-center">
-        <h1 className="text-2xl font-bold tracking-wider" style={{ fontFamily: 'var(--font-serif)' }}>
-          GRIDS
+      <div className="p-8 flex items-center justify-center border-b border-[var(--border-color)]">
+        <h1 className="text-3xl font-bold tracking-[0.2em] nexus-glow-text" style={{ fontFamily: 'var(--font-serif)' }}>
+          NEXUS
         </h1>
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 overflow-y-auto px-4 py-2 space-y-8">
-        <div>
-          <SidebarItem href="/dashboard" icon={<Home size={18} />} label="Dashboard" active={pathname === '/dashboard'} />
-          <SidebarItem href="/dashboard/alerts" icon={<AlertCircle size={18} />} label="Point of Sale" active={pathname === '/dashboard/alerts'} />
-          <SidebarItem href="/dashboard/analytics" icon={<BarChart2 size={18} />} label="Customers" active={pathname === '/dashboard/analytics'} />
-          <SidebarItem href="/dashboard/ecosystem" icon={<LayoutGrid size={18} />} label="Inventory" active={pathname.startsWith('/dashboard/ecosystem')} />
-          <SidebarItem href="/dashboard/audit" icon={<FileKey size={18} />} label="Repairs" active={pathname === '/dashboard/audit'} />
-          <SidebarItem href="/dashboard/gnn" icon={<Network size={18} />} label="HR & Payroll" active={pathname === '/dashboard/gnn'} />
-          <SidebarItem href="/dashboard/federated" icon={<ShieldCheck size={18} />} label="Manufacturing" active={pathname === '/dashboard/federated'} />
-          <SidebarItem href="/dashboard/drift" icon={<TrendingDown size={18} />} label="Memo Mgmt" active={pathname === '/dashboard/drift'} />
-          <SidebarItem href="/dashboard/streaming" icon={<Zap size={18} />} label="Analytics & Targets" active={pathname === '/dashboard/streaming'} />
-          <SidebarItem href="/dashboard/quantum" icon={<Cpu size={18} />} label="Integrations" active={pathname === '/dashboard/quantum'} />
-          <SidebarItem href="/dashboard/settings" icon={<Settings2 size={18} />} label="Settings" active={pathname === '/dashboard/settings'} />
+      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
+        <SidebarItem href="/dashboard" icon={<Home size={18} />} label="Overview" active={pathname === '/dashboard'} />
+        <SidebarItem href="/dashboard/alerts" icon={<AlertCircle size={18} />} label="Live Alerts" active={pathname === '/dashboard/alerts'} />
+        <SidebarItem href="/dashboard/analytics" icon={<BarChart2 size={18} />} label="Model Analytics" active={pathname === '/dashboard/analytics'} />
+        <SidebarItem href="/dashboard/ecosystem" icon={<LayoutGrid size={18} />} label="Module Ecosystem" active={pathname.startsWith('/dashboard/ecosystem')} />
+        <SidebarItem href="/dashboard/audit" icon={<FileKey size={18} />} label="Audit Log" active={pathname === '/dashboard/audit'} />
+        
+        <div className="pt-6 pb-2 px-4">
+          <p className="text-[10px] font-bold text-[var(--text-muted)] tracking-widest uppercase">Engine Modules</p>
         </div>
+        
+        <SidebarItem href="/dashboard/gnn" icon={<Network size={18} />} label="Graph Neural Nets" active={pathname === '/dashboard/gnn'} />
+        <SidebarItem href="/dashboard/federated" icon={<ShieldCheck size={18} />} label="Federated Learning" active={pathname === '/dashboard/federated'} />
+        <SidebarItem href="/dashboard/drift" icon={<TrendingDown size={18} />} label="Drift Monitor" active={pathname === '/dashboard/drift'} />
+        <SidebarItem href="/dashboard/streaming" icon={<Zap size={18} />} label="Data Streams" active={pathname === '/dashboard/streaming'} />
+        <SidebarItem href="/dashboard/quantum" icon={<Cpu size={18} />} label="Quantum Nodes" active={pathname === '/dashboard/quantum'} />
+        
+        <div className="pt-6 pb-2 px-4">
+          <p className="text-[10px] font-bold text-[var(--text-muted)] tracking-widest uppercase">System</p>
+        </div>
+        <SidebarItem href="/dashboard/settings" icon={<Settings2 size={18} />} label="System Config" active={pathname === '/dashboard/settings'} />
       </div>
 
       {/* Profile / Logout Section (Bottom) */}
-      <div className="p-4 mt-auto">
-        <div className="flex items-center gap-3 px-2 py-3">
-          <div className="w-10 h-10 rounded-full bg-gray-800 border border-[var(--border-color)] flex items-center justify-center text-white text-sm font-semibold">
-            N
+      <div className="p-4 mt-auto border-t border-[var(--border-color)]">
+        <div className="flex items-center gap-3 px-2 py-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-800 to-gray-700 border border-[var(--border-color)] flex items-center justify-center text-white text-sm font-semibold group-hover:border-gold/50 transition-colors">
+            K
           </div>
           <div className="flex flex-col flex-1 overflow-hidden">
-            <span className="font-semibold text-sm text-white truncate">Isabella Rossi</span>
-            <span className="text-xs text-[var(--text-muted)]">Admin</span>
+            <span className="font-semibold text-sm text-white truncate">Kartikay</span>
+            <span className="text-[11px] text-[var(--gold)] tracking-wide font-medium">ML Engineer</span>
           </div>
-          <button onClick={handleLogout} className="text-[var(--text-muted)] hover:text-white transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="text-[var(--text-muted)] hover:text-white transition-colors">
             <LogOut size={16} />
           </button>
         </div>
@@ -66,16 +73,21 @@ function SidebarItem({
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-200 mb-1 ${
+      className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 relative group overflow-hidden ${
         active
-          ? 'sidebar-active font-medium'
-          : 'text-[var(--foreground)] hover:bg-white/5'
+          ? 'sidebar-active text-white'
+          : 'text-[var(--text-muted)] hover:text-white hover:bg-white/5'
       }`}
     >
-      <span className={active ? 'text-gold' : 'text-[var(--text-muted)]'}>{icon}</span>
-      <span className="flex-1">{label}</span>
       {active && (
-        <div className="w-1.5 h-1.5 rounded-full bg-[var(--gold-light)] ml-2 shadow-[0_0_8px_rgba(246,201,80,0.8)]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(230,197,82,0.1)] to-transparent opacity-100" />
+      )}
+      <span className={`relative z-10 transition-colors duration-300 ${active ? 'text-gold drop-shadow-[0_0_8px_rgba(230,197,82,0.5)]' : 'group-hover:text-gold'}`}>
+        {icon}
+      </span>
+      <span className="flex-1 relative z-10 tracking-wide">{label}</span>
+      {active && (
+        <div className="w-1.5 h-1.5 rounded-full bg-gold shadow-[0_0_10px_rgba(230,197,82,1)] relative z-10 animate-pulse-slow" />
       )}
     </Link>
   );

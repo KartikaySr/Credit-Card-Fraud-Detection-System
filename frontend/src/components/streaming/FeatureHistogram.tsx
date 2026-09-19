@@ -7,7 +7,7 @@ export default function FeatureHistogram() {
   useEffect(() => {
     const fetchStream = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/streaming/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/streaming/status`);
         const json = await res.json();
         if (json.feature_histogram) setHist(json.feature_histogram);
       } catch (err) {}
@@ -18,8 +18,8 @@ export default function FeatureHistogram() {
   }, []);
 
   return (
-    <div className="glass-card p-6 h-[300px] flex flex-col relative overflow-hidden">
-      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-rose-500 mb-2">
+    <div className="grids-card p-6 h-[300px] flex flex-col relative overflow-hidden">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-200 mb-2">
         Feature V14 Distribution
       </h3>
       <p className="text-sm text-gray-400 mb-6">Real-time histogram of the most critical PCA component.</p>
@@ -28,7 +28,7 @@ export default function FeatureHistogram() {
         {hist.map((val, i) => (
           <div 
             key={i} 
-            className="flex-1 bg-gradient-to-t from-orange-500/50 to-rose-500/80 rounded-t hover:opacity-80 transition-all duration-500"
+            className="flex-1 bg-gradient-to-t from-emerald-500/30 to-emerald-400/60 rounded-t hover:from-gold hover:to-gold-light transition-all duration-500"
             style={{ height: `${val}%` }}
           ></div>
         ))}

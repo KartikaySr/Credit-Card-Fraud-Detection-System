@@ -86,3 +86,5 @@ frontend/node_modules/
 frontend/.next/
 catboost_info/
 
+# Data Files
+*.csv.zip

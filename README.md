@@ -10,7 +10,7 @@
 
 Nexus is an ultra-modern, highly scalable enterprise Machine Learning platform designed to detect financial fraud, synthesize threat intelligence, and provide Explainable AI (XAI) insights with zero latency. 
 
-Built with an unapologetic focus on **Agentic AI** and **3D Glassmorphic UI/UX**, Nexus goes beyond basic dashboards to provide a full "App Store" ecosystem of threat detection modules.
+Built with an unapologetic focus on **Agentic AI** and a luxurious **Charcoal & Gold Glassmorphic UI/UX**, Nexus goes beyond basic dashboards to provide a full "App Store" ecosystem of threat detection modules.
 
 ---
 
@@ -20,17 +20,18 @@ Built with an unapologetic focus on **Agentic AI** and **3D Glassmorphic UI/UX**
 - **Zero-Latency WebSockets:** The frontend bypasses standard HTTP polling and maintains a direct TCP WebSocket connection (`/ws/stream`) to the FastAPI backend, streaming anomaly logs and threat alerts the millisecond they are detected.
 - **Explainable AI (XAI) with SHAP:** Real transactions are processed through `EnhancedFraudDetectionService`, which extracts PCA vectors and uses SHAP to calculate exact log-odds contributions for every feature, displaying *why* a transaction was flagged.
 
-### 2. Astra-Level Agentic AI Copilot (Phase 2)
+### 2. Astra-Level Agentic AI Copilot (Phase 2 & 5)
 - **Contextual Cognitive Brain:** Nexus features a global, floating AI Copilot that uses advanced heuristics and Server-Sent Events (SSE) to simulate an ultra-fast LLM.
-- **Intent Engine:** It doesn't just chat. Ask it to "Explain the last transaction" and it reads the backend ML state to provide a human-readable translation of the exact mathematical SHAP values that triggered the fraud block.
+- **Resilient SSE Buffering:** The frontend employs a custom `TextDecoder` buffer that perfectly handles TCP fragmentation and chunk truncation, ensuring flawless, uninterrupted AI tokens even under heavy network load.
 
-### 3. The 100-Module Threat Ecosystem (Phase 3)
-- **Ecosystem Hub:** A sprawling architectural hub built to support 100+ specialized ML models (e.g., Synthetic Identity Detectors, LLM Firewall).
-- **Hero Module: Dark Web OSINT Scanner:** A matrix-style terminal that simulates scraping Tor exit nodes and Pastebin dumps to cross-reference compromised credentials in real-time.
-- **Hero Module: Behavioral Biometrics:** A continuous-authentication tracker that actively monitors mouse velocity and keystroke dynamics to assign a live Bot-Probability score to the active session.
+### 3. The 100-Module Threat Ecosystem (Phase 3 & 4)
+- **Ecosystem Hub:** A sprawling architectural hub built to support 100+ specialized ML models.
+- **Graph Neural Networks (GNN):** Visualizes complex fraud rings in an interactive D3 force-directed particle graph, linking malicious actors via shared IPs, Device IDs, and Wallet addresses. Fully responsive and hydration-error-free.
+- **Dark Web OSINT Scanner:** A matrix-style terminal that simulates scraping Tor exit nodes. Handles connection reconnects flawlessly.
 
-### 4. Advanced Graph Neural Networks (GNN)
-- Visualizes complex fraud rings in a 3D particle graph, linking malicious actors via shared IPs, Device IDs, and Wallet addresses.
+### 4. Luxury Aesthetic & Export Capabilities (Phase 6 & 7)
+- **Grids Gold Design System:** The entire platform has been upgraded to a cohesive, ultra-premium Charcoal, Deep Green, and Gold palette. All crude legacy gradients and default Notion-like boxes have been replaced with elegant `.grids-card` glassmorphism.
+- **Algorithmic Forensic Reports:** High-fidelity algorithmic PDF Generation using `html2canvas` and `jsPDF`. The system automatically scales down tall forensic dashboards to perfectly center and fit onto an A4 page without bottom-edge clipping.
 
 ---
 
@@ -42,7 +43,7 @@ Built with an unapologetic focus on **Agentic AI** and **3D Glassmorphic UI/UX**
 - **Native WebSockets & EventSource (SSE)** - For real-time telemetry streaming and AI token generation.
 - **Lucide React** - Vector iconography.
 
-### Backend (FastAPI / Render / AWS)
+### Backend (FastAPI / AWS)
 - **Python 3.10+ / FastAPI** - Asynchronous, ultra-fast API endpoints.
 - **Machine Learning Ensemble** - Simulation pipelines representing XGBoost, LightGBM, and Graph Neural Networks.
 - **StreamingResponse & WebSockets** - Handling high-throughput, low-latency client connections.

@@ -1,19 +1,25 @@
+"use client";
+
 import React from 'react';
-import { Search, ShoppingCart, Bell, Palette } from 'lucide-react';
+import { Search, ShoppingCart, Bell, HelpCircle } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { useTutorial } from '@/components/tutorial/TutorialProvider';
 
 export default function TopNav() {
+  const { startTutorial } = useTutorial();
+
   return (
     <div className="h-20 border-b border-[var(--border-color)] bg-[var(--background)] px-8 flex items-center justify-between sticky top-0 z-20">
       
       {/* Left: Search Bar */}
-      <div className="relative w-96">
+      <div className="relative w-96 tutorial-search">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search size={16} className="text-[var(--text-muted)]" />
         </div>
         <input
           type="text"
-          className="bg-[var(--card-bg)] border border-[var(--border-color)] text-white text-sm rounded-full focus:ring-1 focus:ring-[var(--gold)] focus:border-[var(--gold)] block w-full pl-10 p-2.5 placeholder-[var(--text-muted)] transition-all outline-none"
-          placeholder="Search items, customers, or repairs..."
+          className="bg-[var(--card-bg)] border border-[var(--border-color)] text-[var(--foreground)] text-sm rounded-full focus:ring-1 focus:ring-[var(--gold)] focus:border-[var(--gold)] block w-full pl-10 p-2.5 placeholder-[var(--text-muted)] transition-all outline-none"
+          placeholder="Search transactions, alerts, or models..."
         />
       </div>
 
@@ -21,37 +27,36 @@ export default function TopNav() {
       <div className="flex items-center gap-6">
         
         {/* Live Rates */}
-        <div className="flex items-center gap-4 text-xs font-semibold tracking-wide">
-          <span className="text-[var(--text-muted)]">LIVE RATES</span>
-          <div className="flex items-center gap-1 text-[var(--gold-light)]">
-            <span>24K</span>
-            <span className="text-white">245.50</span>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+        <div className="flex items-center gap-4 text-xs font-semibold tracking-wide tutorial-status hidden md:flex">
+          <span className="text-[var(--text-muted)]">SYSTEM STATUS</span>
+          <div className="flex items-center gap-1 text-[var(--status-green)]">
+            <span className="w-2 h-2 rounded-full bg-[var(--status-green)] animate-pulse"></span>
+            <span className="text-[var(--foreground)] ml-1">SECURE</span>
           </div>
-          <div className="flex items-center gap-1 text-[var(--gold-light)]">
-            <span>22K</span>
-            <span className="text-white">225.10</span>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+          <div className="flex items-center gap-1 text-[var(--text-muted)] ml-2">
+            <span>MODEL</span>
+            <span className="text-[var(--foreground)]">XGBoost V2</span>
           </div>
-          <div className="flex items-center gap-1 text-[var(--gold-light)]">
-            <span>18K</span>
-            <span className="text-white">184.20</span>
-            <svg className="w-3 h-3 text-[var(--status-red)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+          <div className="flex items-center gap-1 text-[var(--text-muted)] ml-2">
+            <span>LATENCY</span>
+            <span className="text-[var(--foreground)]">45ms</span>
           </div>
         </div>
 
         {/* Action Icons */}
-        <div className="flex items-center gap-4 text-[var(--text-muted)]">
-          <button className="hover:text-white transition-colors relative">
-            <ShoppingCart size={20} />
+        <div className="flex items-center gap-2 text-[var(--text-muted)]">
+          <button 
+            onClick={startTutorial}
+            className="p-2 hover:text-[var(--gold)] hover:bg-[var(--card-hover)] rounded-full transition-colors relative tutorial-help"
+            title="Start Tutorial"
+          >
+            <HelpCircle size={20} />
           </button>
-          <button className="hover:text-white transition-colors relative">
+          <button className="p-2 hover:text-[var(--foreground)] hover:bg-[var(--card-hover)] rounded-full transition-colors relative">
             <Bell size={20} />
-            <span className="absolute top-0 right-0 w-2 h-2 bg-[var(--gold-light)] rounded-full border-2 border-[var(--background)]"></span>
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[var(--gold-light)] rounded-full border-2 border-[var(--background)]"></span>
           </button>
-          <button className="hover:text-white transition-colors relative">
-            <Palette size={20} />
-          </button>
+          <ThemeToggle />
         </div>
 
       </div>

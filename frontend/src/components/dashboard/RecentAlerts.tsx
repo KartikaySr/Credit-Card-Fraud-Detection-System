@@ -5,13 +5,13 @@ export default function RecentAlerts({ alerts }: { alerts: any[] | undefined }) 
 
   return (
     <div className="mt-8 mb-8 flex flex-col">
-      <div className="glass-card p-6">
+      <div className="grids-card p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400 tracking-wide">
+          <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-gold to-yellow-200 tracking-wide">
             Recent Alerts
           </h3>
           <div className="flex items-center space-x-4">
-            <a href="http://localhost:8000/api/v1/export/csv" download="fraud_report.csv" className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-xs font-semibold text-gray-300 transition-colors">
+            <a href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/export/csv`} download="fraud_report.csv" className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-xs font-semibold text-gray-300 transition-colors">
               Export CSV
             </a>
             <div className="flex items-center space-x-2">

@@ -29,7 +29,7 @@ export default function CopilotWidget() {
     setIsTyping(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/copilot/chat', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/copilot/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage })
@@ -42,12 +42,15 @@ export default function CopilotWidget() {
       
       setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
+      let buffer = '';
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         
-        const chunkStr = decoder.decode(value);
-        const events = chunkStr.split('\n\n');
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split('\n\n');
+        
+        buffer = events.pop() || '';
         
         for (const event of events) {
           if (event.startsWith('data: ')) {
@@ -89,7 +92,7 @@ export default function CopilotWidget() {
       </button>
 
       {/* Copilot Interface */}
-      <div className={`fixed bottom-8 right-8 z-50 w-96 h-[600px] flex flex-col bg-black/60 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl transition-all duration-500 origin-bottom-right ${isOpen ? 'scale-100 opacity-100' : 'scale-90 opacity-0 pointer-events-none'}`}>
+      <div className={`fixed bottom-8 right-8 z-50 w-96 h-[600px] flex flex-col bg-black/60 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl transition-all duration-500 origin-bottom-right tutorial-copilot ${isOpen ? 'scale-100 opacity-100' : 'scale-90 opacity-0 pointer-events-none'}`}>
         
         {/* Header */}
         <div className="p-4 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-t-2xl">

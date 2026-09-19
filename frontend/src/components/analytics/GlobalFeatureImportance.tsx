@@ -7,7 +7,7 @@ export default function GlobalFeatureImportance() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/analytics/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/analytics/status`);
         const json = await res.json();
         if (json.feature_importance) setFeatures(json.feature_importance);
       } catch (err) {}

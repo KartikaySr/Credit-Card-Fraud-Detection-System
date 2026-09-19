@@ -8,7 +8,7 @@ export default function HardwareStatus() {
   useEffect(() => {
     const fetchHw = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/quantum/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/quantum/status`);
         const data = await res.json();
         if (data.hardware) setHw(data.hardware);
       } catch (err) {}

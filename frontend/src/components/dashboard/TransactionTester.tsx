@@ -25,11 +25,15 @@ export default function TransactionTester() {
         transaction_type: "purchase"
       };
 
-      const res = await fetch('http://localhost:8000/api/v1/detect-fraud', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/detect-fraud`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+      
+      if (!res.ok) {
+        throw new Error(`API Error: ${res.status}`);
+      }
       
       const data = await res.json();
       setResult(data);
@@ -45,7 +49,7 @@ export default function TransactionTester() {
     <div className="mt-8 mb-16">
       <h3 className="text-lg font-semibold mb-4">Test Transaction</h3>
       
-      <div className="notion-card p-6">
+      <div className="grids-card p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">

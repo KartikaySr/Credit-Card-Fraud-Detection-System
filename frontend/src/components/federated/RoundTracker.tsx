@@ -9,7 +9,7 @@ export default function RoundTracker() {
   useEffect(() => {
     const fetchFed = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/federated/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/federated/status`);
         const json = await res.json();
         setData({ round: json.current_round, updates: json.updates_received, stragglers: json.stragglers });
       } catch (err) {}

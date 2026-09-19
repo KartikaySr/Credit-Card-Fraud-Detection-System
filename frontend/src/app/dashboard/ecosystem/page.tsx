@@ -18,19 +18,19 @@ const HERO_MODULES = [
     id: 'biometrics',
     name: 'Behavioral Biometrics',
     description: 'Analyzes keystroke dynamics and mouse velocity vectors for bot detection.',
-    icon: <Activity className="text-purple-400 w-8 h-8" />,
+    icon: <Activity className="text-amber-400 w-8 h-8" />,
     href: '/dashboard/ecosystem/biometrics',
     status: 'ACTIVE',
-    color: 'from-purple-500/20 to-indigo-900/40'
+    color: 'from-amber-500/20 to-yellow-900/40'
   },
   {
     id: 'gnn',
     name: 'Graph Neural Network (GNN)',
     description: 'Interactive 3D visualization of fraud rings connected by shared IPs.',
-    icon: <Network className="text-blue-400 w-8 h-8" />,
+    icon: <Network className="text-gold w-8 h-8" />,
     href: '/dashboard/gnn',
     status: 'ACTIVE',
-    color: 'from-blue-500/20 to-cyan-900/40'
+    color: 'from-gold/20 to-amber-900/40'
   }
 ];
 
@@ -60,7 +60,7 @@ export default function EcosystemPage() {
   return (
     <div className="space-y-8 animate-fade-in pb-20">
       <header>
-        <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 mb-2">
+        <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-gold to-yellow-200 mb-2">
           Enterprise Module Ecosystem
         </h1>
         <p className="text-[var(--text-muted)] text-lg max-w-3xl">
@@ -74,7 +74,7 @@ export default function EcosystemPage() {
           <Link 
             key={i} 
             href={mod.href}
-            className={`group relative glass-card p-6 rounded-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:scale-[1.02] ${mod.href !== '#' ? 'hover:border-white/20 hover:shadow-[0_0_30px_rgba(79,70,229,0.2)]' : 'opacity-70 grayscale hover:grayscale-0'}`}
+            className={`group relative grids-card p-6 rounded-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:scale-[1.02] ${mod.href !== '#' ? 'hover:border-gold/30 hover:shadow-[0_0_30px_rgba(230,197,82,0.15)]' : 'opacity-70 grayscale hover:grayscale-0'}`}
           >
             {/* Background Gradient */}
             <div className={`absolute inset-0 bg-gradient-to-br ${mod.color} opacity-50 z-0 transition-opacity group-hover:opacity-100`}></div>
@@ -95,7 +95,7 @@ export default function EcosystemPage() {
               <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
                 <span className="text-xs text-gray-500">Node ID: {Math.random().toString(36).substring(2, 10).toUpperCase()}</span>
                 {mod.href !== '#' && (
-                  <span className="text-xs font-semibold text-blue-400 group-hover:text-blue-300 flex items-center gap-1">
+                  <span className="text-xs font-semibold text-gold group-hover:text-gold-light flex items-center gap-1">
                     Initialize <Zap className="w-3 h-3" />
                   </span>
                 )}

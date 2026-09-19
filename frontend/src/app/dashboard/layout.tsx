@@ -15,16 +15,18 @@ export const metadata: Metadata = {
   description: "Advanced AI-Powered Fraud Detection Platform",
 };
 
+import { TutorialProvider } from "@/components/tutorial/TutorialProvider";
+
 export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} flex h-screen overflow-hidden relative`}>
-        <Toaster theme="dark" position="bottom-right" />
-        <AuthGuard>
+    <div className="flex h-screen overflow-hidden relative">
+      <Toaster theme="dark" position="bottom-right" />
+      <AuthGuard>
+        <TutorialProvider>
           <Sidebar />
           <CommandPalette />
           <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[var(--background)]">
@@ -36,8 +38,8 @@ export default function DashboardLayout({
             </main>
           </div>
           <CopilotWidget />
-        </AuthGuard>
-      </body>
-    </html>
+        </TutorialProvider>
+      </AuthGuard>
+    </div>
   );
 }

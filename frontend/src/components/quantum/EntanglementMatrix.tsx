@@ -7,7 +7,7 @@ export default function EntanglementMatrix() {
   useEffect(() => {
     const fetchMatrix = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/quantum/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/quantum/status`);
         const data = await res.json();
         if (data.entanglement_matrix) setMatrix(data.entanglement_matrix);
       } catch (err) {}

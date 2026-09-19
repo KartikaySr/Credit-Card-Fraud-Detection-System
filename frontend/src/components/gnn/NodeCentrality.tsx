@@ -7,7 +7,7 @@ export default function NodeCentrality() {
   useEffect(() => {
     const fetchGNN = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/gnn/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/gnn/status`);
         const json = await res.json();
         if (json.central_nodes) setNodes(json.central_nodes);
       } catch (err) {}
@@ -18,8 +18,8 @@ export default function NodeCentrality() {
   }, []);
 
   return (
-    <div className="glass-card p-6 h-full min-h-[300px]">
-      <h3 className="text-lg font-bold text-gray-200 mb-4">Eigenvector Centrality</h3>
+    <div className="grids-card p-6 h-full min-h-[300px]">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-yellow-200 mb-2">Eigenvector Centrality</h3>
       <p className="text-sm text-gray-400 mb-6">Top nodes by influence score.</p>
       
       <div className="space-y-4">
@@ -32,11 +32,11 @@ export default function NodeCentrality() {
             </div>
             <div className="w-full h-1.5 bg-black/40 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-1000"
+                className="h-full bg-gradient-to-r from-gold to-gold-light transition-all duration-1000"
                 style={{ width: `${node.score * 100}%` }}
               ></div>
             </div>
-            <div className="text-right text-xs font-mono text-cyan-400">{node.score.toFixed(3)}</div>
+            <div className="text-right text-xs font-mono text-gold-light">{node.score.toFixed(3)}</div>
           </div>
         ))}
       </div>

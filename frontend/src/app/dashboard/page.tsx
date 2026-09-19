@@ -23,7 +23,12 @@ export default function Dashboard() {
 
   const fetchDashboardData = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/v1/status');
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/status`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
       if (!res.ok) throw new Error('Backend offline');
       const backendData = await res.json();
       
@@ -111,20 +116,20 @@ export default function Dashboard() {
       <div className="mb-10">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-serif text-[var(--gold-light)] mb-1 tracking-wide" style={{ fontFamily: 'var(--font-serif)' }}>Welcome back, Isabella</h1>
+            <h1 className="text-3xl font-serif text-[var(--gold-light)] mb-1 tracking-wide" style={{ fontFamily: 'var(--font-serif)' }}>Nexus Fraud Engine</h1>
             <div className="text-sm text-[var(--text-muted)]">
-              Here is what's happening with your stores today.
+              Real-time anomaly detection and transaction risk analytics.
             </div>
           </div>
           <button
             onClick={runDemoMode}
             disabled={demoRunning}
-            className="flex items-center gap-2 px-6 py-2.5 bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black font-semibold rounded-full shadow-[0_4px_15px_rgba(212,175,55,0.2)] hover:shadow-[0_4px_20px_rgba(212,175,55,0.4)] transition-all text-sm"
+            className="flex items-center gap-2 px-6 py-2.5 bg-gold-gradient hover:brightness-110 text-[#11201b] font-semibold rounded-full shadow-[0_4px_15px_rgba(230,197,82,0.3)] hover:shadow-[0_4px_20px_rgba(230,197,82,0.5)] transition-all text-sm"
           >
             {demoRunning ? (
-              <><Loader2 className="w-4 h-4 animate-spin text-black" /><span className="max-w-[180px] truncate text-black">{demoStatus}</span></>
+              <><Loader2 className="w-4 h-4 animate-spin text-[#11201b]" /><span className="max-w-[180px] truncate text-[#11201b]">{demoStatus}</span></>
             ) : (
-              <><Play className="w-4 h-4 text-black" />Run Live Demo</>
+              <><Play className="w-4 h-4 text-[#11201b]" />Run Live Demo</>
             )}
           </button>
         </div>

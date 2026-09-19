@@ -29,8 +29,8 @@ export default function GeoHeatmap() {
   }, []);
 
   return (
-    <div className="glass-card p-6 h-[400px] flex flex-col relative overflow-hidden group">
-      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 mb-2 z-10">
+    <div className="grids-card p-6 h-[400px] flex flex-col relative overflow-hidden group">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-300 mb-2 z-10">
         Global Threat Heatmap
       </h3>
       <p className="text-sm text-gray-400 mb-4 z-10">Live geolocation tracking of anomalous transaction clusters.</p>
@@ -47,13 +47,13 @@ export default function GeoHeatmap() {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill="#1e293b" 
-                  stroke="#334155" 
+                  fill="#101d16" 
+                  stroke="#16231c" 
                   strokeWidth={0.5}
                   style={{
                     default: { outline: "none" },
-                    hover: { fill: "#334155", outline: "none" },
-                    pressed: { fill: "#475569", outline: "none" },
+                    hover: { fill: "#16231c", outline: "none" },
+                    pressed: { fill: "#11201b", outline: "none" },
                   }}
                 />
               ))
@@ -63,7 +63,7 @@ export default function GeoHeatmap() {
             <Marker key={name} coordinates={coordinates as [number, number]}>
               <circle 
                 r={isFraud ? 6 : 3} 
-                fill={isFraud ? "#f43f5e" : "#34d399"} 
+                fill={isFraud ? "#e76666" : "#e6c552"} 
                 className={isFraud ? "animate-pulse" : ""}
                 opacity={0.8}
               />

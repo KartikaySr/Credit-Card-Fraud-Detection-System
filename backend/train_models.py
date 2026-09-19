@@ -165,7 +165,7 @@ def train_models():
     logger.info("Saving models and preprocessors...")
     joblib.dump(xgb_model, models_dir / 'xgboost_model.joblib')
     joblib.dump(lgb_model, models_dir / 'lightgbm_model.joblib')
-    joblib.dump(cat_model, models_dir / 'catboost_model.joblib')
+    cat_model.save_model(str(models_dir / 'catboost_model.cbm'))
     joblib.dump(scaler, models_dir / 'scaler.joblib')
     joblib.dump(encoders, models_dir / 'encoders.joblib')
 

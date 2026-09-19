@@ -151,6 +151,7 @@ async def system_health_check():
         ]
     }
 
+@app.get("/api/v1/status", tags=["Health Check"])
 @app.get("/api/v1/health", tags=["Health Check"])
 async def detailed_health_check():
     """Comprehensive health check with system metrics"""
@@ -355,12 +356,24 @@ async def websocket_stream(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            # Broadcast live streaming status every second
-            data = await AdvancedMLService.get_streaming_status()
-            await websocket.send_json(data)
-            await asyncio.sleep(1)
+            try:
+                # Broadcast live streaming status every second
+                data = await AdvancedMLService.get_streaming_status()
+                await websocket.send_json(data)
+                await asyncio.sleep(1)
+            except WebSocketDisconnect:
+                raise
+            except Exception as e:
+                logger.error(f"WebSocket internal stream error: {str(e)}")
+                await asyncio.sleep(5) # backoff before retrying
     except WebSocketDisconnect:
         logger.info("Client disconnected from streaming websocket")
+    except Exception as e:
+        logger.error(f"WebSocket fatal error: {str(e)}")
+        try:
+            await websocket.close(code=1011)
+        except:
+            pass
         
 @app.get("/api/v1/export/csv", tags=["Analytics"])
 async def export_csv():
@@ -404,17 +417,21 @@ async def darkweb_stream():
     async def event_stream():
         domains = ["gmail.com", "yahoo.com", "protonmail.ch", "corp.bank.com", "gov.ru"]
         sources = ["Pastebin", "Tor Exit Node", "Ransomware Leak Site", "Genesis Market"]
-        while True:
-            await asyncio.sleep(random.uniform(0.5, 2.5))
-            compromised = f"{''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=6))}@{random.choice(domains)}"
-            payload = {
-                "timestamp": datetime.utcnow().isoformat(),
-                "source": random.choice(sources),
-                "compromised_identity": compromised,
-                "threat_level": random.choice(["HIGH", "CRITICAL", "MEDIUM"]),
-                "breach_hash": ''.join(random.choices('0123456789abcdef', k=12))
-            }
-            yield f"data: {json.dumps(payload)}\n\n"
+        try:
+            while True:
+                await asyncio.sleep(random.uniform(0.5, 2.5))
+                compromised = f"{''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=6))}@{random.choice(domains)}"
+                payload = {
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "source": random.choice(sources),
+                    "compromised_identity": compromised,
+                    "threat_level": random.choice(["HIGH", "CRITICAL", "MEDIUM"]),
+                    "breach_hash": ''.join(random.choices('0123456789abcdef', k=12))
+                }
+                yield f"data: {json.dumps(payload)}\n\n"
+        except asyncio.CancelledError:
+            logger.info("Darkweb OSINT stream disconnected.")
+            raise
             
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 

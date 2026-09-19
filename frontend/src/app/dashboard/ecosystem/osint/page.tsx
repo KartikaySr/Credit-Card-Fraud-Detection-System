@@ -25,7 +25,7 @@ export default function OSINTPage() {
   }, [events]);
 
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:8000/api/v1/intelligence/darkweb');
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/intelligence/darkweb`);
     
     eventSource.onopen = () => {
       setIsConnected(true);
@@ -40,7 +40,7 @@ export default function OSINTPage() {
 
     eventSource.onerror = () => {
       setIsConnected(false);
-      eventSource.close();
+      // Removed eventSource.close() to allow native SSE auto-reconnect
     };
 
     return () => {

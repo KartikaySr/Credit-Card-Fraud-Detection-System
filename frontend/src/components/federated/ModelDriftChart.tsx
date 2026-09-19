@@ -7,7 +7,7 @@ export default function ModelDriftChart() {
   useEffect(() => {
     const fetchFed = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/federated/status');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/federated/status`);
         const json = await res.json();
         if (json.drift_history) setDrift(json.drift_history);
       } catch (err) {}
@@ -44,8 +44,8 @@ export default function ModelDriftChart() {
   const fillPath = `${dPath} L 100 50 L 0 50 Z`;
 
   return (
-    <div className="glass-card p-6 h-[300px] flex flex-col relative overflow-hidden">
-      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400 mb-2">
+    <div className="grids-card p-6 h-[300px] flex flex-col relative overflow-hidden">
+      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-200 mb-2">
         Global vs Local Model Drift
       </h3>
       <p className="text-sm text-gray-400 mb-6">Weight divergence tracking across recent federation rounds.</p>
@@ -57,9 +57,9 @@ export default function ModelDriftChart() {
           <path 
             d={dPath} 
             fill="none" 
-            stroke="#2dd4bf" 
+            stroke="#34d399" 
             strokeWidth="2"
-            className="drop-shadow-[0_0_8px_rgba(45,212,191,0.5)] transition-all duration-1000"
+            className="drop-shadow-[0_0_8px_rgba(52,211,153,0.5)] transition-all duration-1000"
           />
           <path 
             d={fillPath} 
@@ -69,8 +69,8 @@ export default function ModelDriftChart() {
           
           <defs>
             <linearGradient id="drift-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="rgba(45,212,191,0.2)" />
-              <stop offset="100%" stopColor="rgba(45,212,191,0)" />
+              <stop offset="0%" stopColor="rgba(52,211,153,0.2)" />
+              <stop offset="100%" stopColor="rgba(52,211,153,0)" />
             </linearGradient>
           </defs>
         </svg>
