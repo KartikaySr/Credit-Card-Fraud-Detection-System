@@ -3,6 +3,7 @@
 import React from 'react';
 import { Search, ShoppingCart, Bell, HelpCircle } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { CurrencyToggle } from '@/components/currency/CurrencyToggle';
 import { useTutorial } from '@/components/tutorial/TutorialProvider';
 
 export default function TopNav() {
@@ -45,6 +46,7 @@ export default function TopNav() {
 
         {/* Action Icons */}
         <div className="flex items-center gap-2 text-[var(--text-muted)]">
+          <CurrencyToggle />
           <button 
             onClick={startTutorial}
             className="p-2 hover:text-[var(--gold)] hover:bg-[var(--card-hover)] rounded-full transition-colors relative tutorial-help"

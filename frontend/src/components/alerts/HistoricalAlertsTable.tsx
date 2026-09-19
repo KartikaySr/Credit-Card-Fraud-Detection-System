@@ -1,9 +1,11 @@
 'use client';
 import React, { useEffect, useState, useMemo } from 'react';
 import { Search, Filter } from 'lucide-react';
+import { useCurrency } from '@/components/currency/CurrencyProvider';
 
 export default function HistoricalAlertsTable() {
   const [alerts, setAlerts] = useState<any[]>([]);
+  const { formatCurrency } = useCurrency();
   const [searchTerm, setSearchTerm] = useState('');
   const [riskFilter, setRiskFilter] = useState('All');
   
@@ -23,11 +25,11 @@ export default function HistoricalAlertsTable() {
         const today = new Date();
         const formatTime = (d: Date) => d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         setAlerts([
-          { id: 'TXN-8472', amount: '$15,000.00', risk: 'High', score: '95.2', time: formatTime(new Date(today.getTime() - 15 * 60000)) },
-          { id: 'TXN-9124', amount: '$8,500.00', risk: 'Medium', score: '88.7', time: formatTime(new Date(today.getTime() - 45 * 60000)) },
-          { id: 'TXN-1058', amount: '$12,000.00', risk: 'High', score: '92.1', time: formatTime(new Date(today.getTime() - 120 * 60000)) },
-          { id: 'TXN-3391', amount: '$2,450.00', risk: 'Low', score: '12.4', time: formatTime(new Date(today.getTime() - 180 * 60000)) },
-          { id: 'TXN-8821', amount: '$45,000.00', risk: 'High', score: '99.8', time: formatTime(new Date(today.getTime() - 240 * 60000)) },
+          { id: 'TXN-8472', amount: 15000, risk: 'High', score: '95.2', time: formatTime(new Date(today.getTime() - 15 * 60000)) },
+          { id: 'TXN-9124', amount: 8500, risk: 'Medium', score: '88.7', time: formatTime(new Date(today.getTime() - 45 * 60000)) },
+          { id: 'TXN-1058', amount: 12000, risk: 'High', score: '92.1', time: formatTime(new Date(today.getTime() - 120 * 60000)) },
+          { id: 'TXN-3391', amount: 2450, risk: 'Low', score: '12.4', time: formatTime(new Date(today.getTime() - 180 * 60000)) },
+          { id: 'TXN-8821', amount: 45000, risk: 'High', score: '99.8', time: formatTime(new Date(today.getTime() - 240 * 60000)) },
         ]);
       }
     };
@@ -39,8 +41,9 @@ export default function HistoricalAlertsTable() {
 
   const filteredAlerts = useMemo(() => {
     return alerts.filter(alert => {
+      const amountStr = typeof alert.amount === 'number' ? alert.amount.toString() : String(alert.amount);
       const matchesSearch = alert.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            alert.amount.toLowerCase().includes(searchTerm.toLowerCase());
+                            amountStr.includes(searchTerm);
       const matchesRisk = riskFilter === 'All' || alert.risk === riskFilter;
       return matchesSearch && matchesRisk;
     });
@@ -100,7 +103,7 @@ export default function HistoricalAlertsTable() {
               <tr key={i} className="group hover:bg-white-[0.02] transition-colors duration-300">
                 <td className="px-4 py-4 font-mono text-gray-300 group-hover:text-white transition-colors">{row.id}</td>
                 <td className="px-4 py-4 text-[var(--text-muted)]">{row.time}</td>
-                <td className="px-4 py-4 font-bold text-gray-200 group-hover:text-gold transition-colors">{row.amount}</td>
+                <td className="px-4 py-4 font-bold text-gray-200 group-hover:text-gold transition-colors">{formatCurrency(Number(row.amount))}</td>
                 <td className="px-4 py-4">
                   <span className={`px-3 py-1.5 rounded-md text-[11px] font-bold tracking-wider border transition-all duration-300 ${
                     row.risk === 'High' ? 'bg-red-500/10 text-[#ff4a4a] border-red-500/20 shadow-[0_0_10px_rgba(255,74,74,0.15)] animate-pulse-slow' :

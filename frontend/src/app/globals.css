@@ -6,7 +6,7 @@
 }
 
 :root {
-  /* 2026 God-Tier Frosted Pearl Palette (Light Mode) */
+  /* Enterprise Frosted Pearl Palette (Light Mode) */
   --background: #f4f6fa;       /* Very light, cool gray/blue */
   --foreground: #1a1d1e;       /* Crisp charcoal for typography */
   --sidebar-bg: rgba(255, 255, 255, 0.6); 
@@ -29,7 +29,7 @@
 }
 
 .dark {
-  /* 2026 God-Tier Deep Space & Neon Gold Palette (Dark Mode) */
+  /* Enterprise Deep Space & Neon Gold Palette (Dark Mode) */
   --background: #050807;       /* Deepest obsidian charcoal */
   --foreground: #e4e6eb;       /* Crisp ice-white for typography */
   --sidebar-bg: rgba(5, 8, 7, 0.4); 

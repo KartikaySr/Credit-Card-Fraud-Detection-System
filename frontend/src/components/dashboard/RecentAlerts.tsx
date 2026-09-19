@@ -1,6 +1,9 @@
 import React from 'react';
+import { useCurrency } from '@/components/currency/CurrencyProvider';
 
 export default function RecentAlerts({ alerts }: { alerts: any[] | undefined }) {
+  const { formatCurrency } = useCurrency();
+
   if (!alerts) return null;
 
   return (
@@ -53,7 +56,7 @@ export default function RecentAlerts({ alerts }: { alerts: any[] | undefined }) 
                 return (
                   <tr key={i} className="hover:bg-white/5 transition-all duration-300 ease-in-out group">
                     <td className="px-6 py-4 font-medium text-gray-200">{alert.id}</td>
-                    <td className="px-6 py-4 text-gray-300">${alert.amount.toLocaleString()}</td>
+                    <td className="px-6 py-4 text-gray-300">{formatCurrency(alert.amount)}</td>
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold border shadow-sm backdrop-blur-md ${badgeBg} ${scoreColor}`}>
                         {alert.risk_score.toFixed(1)}/100

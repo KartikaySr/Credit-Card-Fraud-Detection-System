@@ -19,7 +19,7 @@ export function PlatformTutorial({ run, onFinish }: PlatformTutorialProps) {
         <div className="flex flex-col gap-2 text-left">
           <h3 className="text-xl font-bold nexus-glow-text mb-1">Welcome to Nexus Fraud Engine</h3>
           <p className="text-[var(--text-muted)] text-sm">
-            This is a 2026 God-Tier platform for AI-driven fraud detection.
+            This is an enterprise-grade platform for AI-driven fraud detection.
             Let's take a quick tour of your new command center.
           </p>
         </div>

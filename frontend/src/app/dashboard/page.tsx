@@ -83,11 +83,11 @@ export default function Dashboard() {
 
   const runDemoMode = async () => {
     setDemoRunning(true);
-    const steps = ['Seeding 500 synthetic transactions...', 'Injecting 12 fraud vectors...', 'Running ensemble inference...', 'Updating KPIs...', 'Done!'];
+    const steps = ['Seeding 500 synthetic transactions...', 'Simulating 12 fraud cases...', 'Running ensemble inference...', 'Updating KPIs...', 'Done!'];
     for (const step of steps) {
       setDemoStatus(step);
-      if (step === 'Injecting 12 fraud vectors...') {
-        toast.error('Critical Fraud Alert: 12 vectors injected in SE Asia node', {
+      if (step === 'Simulating 12 fraud cases...') {
+        toast.error('Critical Fraud Alert: 12 cases simulated in SE Asia node', {
           description: 'Model drifted past threshold (z-score > 3.0)',
           duration: 5000
         });

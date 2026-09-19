@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { CurrencyProvider } from "@/components/currency/CurrencyProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <CurrencyProvider>
+            {children}
+          </CurrencyProvider>
         </ThemeProvider>
       </body>
     </html>

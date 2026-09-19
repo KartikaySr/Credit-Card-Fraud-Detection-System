@@ -1,4 +1,5 @@
 import React from 'react';
+import { useCurrency } from '@/components/currency/CurrencyProvider';
 
 interface KPIData {
   transactions_processed: number;
@@ -9,6 +10,8 @@ interface KPIData {
 }
 
 export default function KPIMetrics({ data }: { data: KPIData | null }) {
+  const { formatCurrency } = useCurrency();
+
   if (!data) return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
       {[1, 2, 3, 4, 5].map((i) => (
@@ -47,8 +50,8 @@ export default function KPIMetrics({ data }: { data: KPIData | null }) {
       />
       <MetricCard 
         title="Fraud Prevented" 
-        value="$2.4M" 
-        trend="+$340K" 
+        value={formatCurrency(2400000, true)} 
+        trend={`+${formatCurrency(340000, true)}`} 
       />
     </div>
   );

@@ -9,7 +9,7 @@ export default function AlertsPage() {
         <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-500 tracking-tight">
           Transaction Intelligence
         </h1>
-        <p className="text-gray-400 mt-2">Deep dive into historical fraud alerts and inject test vectors.</p>
+        <p className="text-gray-400 mt-2">Deep dive into historical fraud alerts and simulate manual transactions.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

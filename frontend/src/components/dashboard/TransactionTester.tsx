@@ -1,10 +1,12 @@
 "use client"
 
 import React, { useState } from 'react';
+import { useCurrency } from '@/components/currency/CurrencyProvider';
 
 export default function TransactionTester() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const { currency, usdToInrRate } = useCurrency();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,7 +15,13 @@ export default function TransactionTester() {
     try {
       const form = e.target as HTMLFormElement;
       const txId = (form.elements.namedItem('txId') as HTMLInputElement).value;
-      const amount = parseFloat((form.elements.namedItem('amount') as HTMLInputElement).value);
+      let amount = parseFloat((form.elements.namedItem('amount') as HTMLInputElement).value);
+      
+      // Convert INR back to USD for the ML backend
+      if (currency === "INR") {
+        amount = amount / usdToInrRate;
+      }
+
       const merchantId = (form.elements.namedItem('merchantId') as HTMLInputElement).value;
       const userId = (form.elements.namedItem('userId') as HTMLInputElement).value;
 
@@ -63,11 +71,11 @@ export default function TransactionTester() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1">Amount ($)</label>
+                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1">Amount ({currency})</label>
                 <input 
                   type="number" 
                   name="amount"
-                  defaultValue="150.00"
+                  defaultValue={currency === "INR" ? "12500" : "150.00"}
                   className="w-full bg-transparent border border-[var(--border-color)] rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[var(--highlight)] transition-colors"
                 />
               </div>
