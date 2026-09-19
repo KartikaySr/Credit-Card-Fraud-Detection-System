@@ -44,12 +44,21 @@ export default function KPIMetrics({ data }: { data: KPIData | null }) {
   );
 }
 
-function MetricCard({ title, value, trend, trendColor = "text-[var(--text-muted)]" }: { title: string, value: string, trend: string, trendColor?: string }) {
+function MetricCard({ title, value, trend, trendColor = "text-[var(--status-green)]" }: { title: string, value: string, trend: string, trendColor?: string }) {
+  const isPositive = trend.includes('+') || trendColor.includes('green');
   return (
-    <div className="notion-card p-4">
-      <div className="text-sm text-[var(--text-muted)] mb-1">{title}</div>
-      <div className="text-2xl font-semibold mb-1">{value}</div>
-      <div className={`text-xs ${trendColor} font-medium`}>{trend}</div>
+    <div className="grids-card p-6 flex flex-col justify-between">
+      <div className="text-xs tracking-wider uppercase text-[var(--text-muted)] font-semibold mb-3">{title}</div>
+      <div className="text-3xl font-bold mb-3">{value}</div>
+      <div className="flex items-center gap-1 text-xs">
+        {isPositive ? (
+           <svg className="w-3 h-3 text-[var(--status-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+        ) : (
+           <svg className="w-3 h-3 text-[var(--status-red)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+        )}
+        <span className={`${trendColor} font-medium`}>{trend}</span>
+        <span className="text-[var(--text-muted)] ml-1">vs last week</span>
+      </div>
     </div>
   );
 }

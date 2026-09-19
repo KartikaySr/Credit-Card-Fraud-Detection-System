@@ -33,6 +33,16 @@ class TransactionRequest(BaseModel):
     # User behavioral features
     user_id: Optional[str] = Field(None, description="User identifier")
     
+    # Raw Transaction Features (fraudTest.csv)
+    amt: Optional[float] = Field(None, description="Transaction amount (new dataset format)")
+    category: Optional[str] = Field(None, description="Merchant category")
+    lat: Optional[float] = Field(None, description="Customer latitude")
+    long: Optional[float] = Field(None, description="Customer longitude")
+    merch_lat: Optional[float] = Field(None, description="Merchant latitude")
+    merch_long: Optional[float] = Field(None, description="Merchant longitude")
+    dob: Optional[str] = Field(None, description="Customer Date of Birth (YYYY-MM-DD)")
+    gender: Optional[str] = Field(None, description="Customer Gender")
+    
     # PCA transformed features (V1-V28) - for compatibility with original dataset
     V1: Optional[float] = Field(None, description="PCA feature V1")
     V2: Optional[float] = Field(None, description="PCA feature V2")

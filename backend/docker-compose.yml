@@ -89,24 +89,6 @@ services:
       - ./data:/app/data
       - ./logs:/app/logs
 
-  # Streamlit dashboard
-  fraud-dashboard:
-    build:
-      context: .
-      dockerfile: Dockerfile.dashboard
-    container_name: fraud-dashboard
-    depends_on:
-      - fraud-detector
-      - redis
-    ports:
-      - "8501:8501"
-    environment:
-      - FRAUD_DETECTOR_URL=http://fraud-detector:8080
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    volumes:
-      - ./dashboard:/app/dashboard
-
   # MLflow for model tracking
   mlflow:
     image: python:3.9-slim
@@ -159,23 +141,6 @@ services:
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--storage.tsdb.retention.time=200h'
       - '--web.enable-lifecycle'
-
-  # Jupyter notebook for experimentation
-  jupyter:
-    build:
-      context: .
-      dockerfile: Dockerfile.jupyter
-    container_name: jupyter
-    ports:
-      - "8888:8888"
-    environment:
-      - JUPYTER_ENABLE_LAB=yes
-    volumes:
-      - ./notebooks:/home/jovyan/work/notebooks
-      - ./data:/home/jovyan/work/data
-      - ./src:/home/jovyan/work/src
-      - ./models:/home/jovyan/work/models
-    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
 
   # MinIO for object storage (model artifacts)
   minio:

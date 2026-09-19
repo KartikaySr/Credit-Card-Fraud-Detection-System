@@ -4,7 +4,8 @@ Built by Kartikay Srivastava (December 2025 – January 2026)
 Production-ready API with modern architecture and best practices.
 """
 
-from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks, status, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks, status, WebSocket, WebSocketDisconnect, Security
+from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -62,6 +63,16 @@ async def application_lifecycle(app: FastAPI):
     
     # Initialize database connection pool
     app.state.database = get_database_connection()
+    
+    # Create tables
+    try:
+        from app.models.db_models import Base
+        from app.core.database import engine
+        Base.metadata.create_all(bind=engine)
+        logger.info("✅ Database tables created successfully")
+    except Exception as e:
+        logger.error(f"❌ Failed to create database tables: {str(e)}")
+
     logger.info("✅ Database connection established")
     
     # Initialize Redis cache
@@ -110,6 +121,18 @@ def create_fraud_detection_application() -> FastAPI:
 
 # Initialize application
 app = create_fraud_detection_application()
+
+API_KEY_NAME = "X-API-Key"
+api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
+
+def get_api_key(api_key_header: str = Security(api_key_header)):
+    expected_api_key = os.environ.get("FRAUD_API_KEY", "dev-test-key-12345")
+    if api_key_header == expected_api_key:
+        return api_key_header
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid or missing API Key",
+    )
 
 @app.get("/", tags=["Health Check"])
 async def system_health_check():
@@ -163,7 +186,8 @@ async def detailed_health_check():
 @app.post("/api/v1/detect-fraud", response_model=TransactionResponse, tags=["Fraud Detection"])
 async def detect_transaction_fraud(
     transaction: TransactionRequest,
-    background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks,
+    api_key: str = Depends(get_api_key)
 ):
     """
     Real-time fraud detection for individual transactions
@@ -218,7 +242,8 @@ async def detect_transaction_fraud(
 @app.post("/api/v1/detect-fraud/batch", tags=["Fraud Detection"])
 async def detect_batch_fraud(
     batch_request: BatchTransactionRequest,
-    background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks,
+    api_key: str = Depends(get_api_key)
 ):
     """
     Batch fraud detection for multiple transactions
@@ -410,16 +435,53 @@ async def analyze_biometrics():
 async def log_transaction_analysis(transaction_data: dict, result: dict):
     """Log transaction analysis for audit and monitoring"""
     try:
-        # Implementation for logging transaction
-        pass
+        query = """
+            INSERT INTO transactions 
+            (transaction_id, amount, merchant_id, merchant_category, transaction_type, 
+             transaction_country, transaction_city, card_type, user_id, 
+             is_fraud, fraud_probability, risk_score, confidence_level, 
+             explanation, model_version, processing_time_ms) 
+            VALUES (:transaction_id, :amount, :merchant_id, :merchant_category, :transaction_type, 
+             :transaction_country, :transaction_city, :card_type, :user_id, 
+             :is_fraud, :fraud_probability, :risk_score, :confidence_level, 
+             :explanation, :model_version, :processing_time_ms)
+        """
+        values = {
+            "transaction_id": transaction_data.get("transaction_id"),
+            "amount": transaction_data.get("amount", 0.0),
+            "merchant_id": transaction_data.get("merchant_id"),
+            "merchant_category": transaction_data.get("merchant_category"),
+            "transaction_type": transaction_data.get("transaction_type", "purchase"),
+            "transaction_country": transaction_data.get("transaction_country"),
+            "transaction_city": transaction_data.get("transaction_city"),
+            "card_type": transaction_data.get("card_type"),
+            "user_id": transaction_data.get("user_id"),
+            "is_fraud": result.get("is_fraud", False),
+            "fraud_probability": result.get("probability", 0.0),
+            "risk_score": result.get("risk_score", 0.0),
+            "confidence_level": result.get("confidence", "low"),
+            "explanation": json.dumps(result.get("explanation", {})),
+            "model_version": result.get("model_version", "1.0.0"),
+            "processing_time_ms": result.get("processing_time", 0.0)
+        }
+        await app.state.database.execute(query=query, values=values)
     except Exception as e:
         logger.error(f"Error logging transaction: {str(e)}")
 
 async def log_batch_analysis(count: int, fraud_count: int, avg_score: float):
     """Log batch analysis results"""
     try:
-        # Implementation for logging batch analysis
-        pass
+        query = """
+            INSERT INTO batch_logs 
+            (total_transactions, fraud_count, avg_risk_score) 
+            VALUES (:total_transactions, :fraud_count, :avg_risk_score)
+        """
+        values = {
+            "total_transactions": count,
+            "fraud_count": fraud_count,
+            "avg_risk_score": avg_score
+        }
+        await app.state.database.execute(query=query, values=values)
     except Exception as e:
         logger.error(f"Error logging batch analysis: {str(e)}")
 

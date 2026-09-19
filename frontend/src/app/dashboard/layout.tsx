@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import Sidebar from "@/components/layout/Sidebar";
+import TopNav from "@/components/layout/TopNav";
 import CopilotWidget from "@/components/copilot/CopilotWidget";
 import AuthGuard from "@/components/layout/AuthGuard";
 import CommandPalette from "@/components/layout/CommandPalette";
@@ -26,11 +27,14 @@ export default function DashboardLayout({
         <AuthGuard>
           <Sidebar />
           <CommandPalette />
-          <main className="flex-1 overflow-y-auto bg-[var(--background)]">
-            <div className="max-w-5xl mx-auto px-12 py-16">
-              {children}
-            </div>
-          </main>
+          <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[var(--background)]">
+            <TopNav />
+            <main className="flex-1 overflow-y-auto">
+              <div className="max-w-7xl mx-auto px-8 py-10">
+                {children}
+              </div>
+            </main>
+          </div>
           <CopilotWidget />
         </AuthGuard>
       </body>

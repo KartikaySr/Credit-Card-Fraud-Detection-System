@@ -32,6 +32,8 @@ from lime.lime_tabular import LimeTabularExplainer
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
 
+from train_models import engineer_features
+
 logger = logging.getLogger(__name__)
 
 class EnhancedFraudDetectionService:
@@ -45,7 +47,8 @@ class EnhancedFraudDetectionService:
         self.scalers = {}
         self.feature_names = []
         self.model_metadata = {}
-        self.explainer = None
+        self.feature_importance: Dict[str, Any] = {}
+        self.encoders: Dict[str, Any] = {}
         self.shap_explainer = None
         self.lime_explainer = None
         self.executor = ThreadPoolExecutor(max_workers=4)
@@ -79,10 +82,12 @@ class EnhancedFraudDetectionService:
             models_dir = Path("models")
             models_dir.mkdir(exist_ok=True)
             
-            # Check if pre-trained models exist, otherwise create them
             if not self._models_exist():
-                logger.info("Pre-trained models not found. Creating new models...")
-                await self._create_and_train_models()
+                logger.error("Pre-trained models not found.")
+                raise FileNotFoundError(
+                    "Machine learning models are missing. "
+                    "Please run 'CreditCardFraudUpdatedCode2025.py' to train and save models to the 'models/' directory."
+                )
             else:
                 await self._load_existing_models()
             
@@ -103,90 +108,8 @@ class EnhancedFraudDetectionService:
         return all((models_dir / file).exists() for file in required_files)
 
     async def _create_and_train_models(self):
-        """Create and train models with synthetic data for demonstration"""
-        logger.info("Creating synthetic training data...")
-        
-        # Generate synthetic credit card transaction data
-        np.random.seed(42)
-        n_samples = 10000
-        n_features = 30
-        
-        # Simulate PCA-transformed features (like in the original credit card dataset)
-        X_synthetic = np.random.randn(n_samples, n_features)
-        
-        # Create realistic fraud labels (0.17% fraud rate)
-        fraud_indices = np.random.choice(n_samples, size=int(n_samples * 0.0017), replace=False)
-        y_synthetic = np.zeros(n_samples)
-        y_synthetic[fraud_indices] = 1
-        
-        # Make fraudulent transactions more extreme
-        X_synthetic[fraud_indices] *= 2
-        
-        # Feature names
-        self.feature_names = [f'V{i}' for i in range(1, 29)] + ['Amount', 'Time']
-        
-        # Scale features
-        scaler = StandardScaler()
-        X_scaled = scaler.fit_transform(X_synthetic)
-        
-        # Train models
-        await self._train_ensemble_models(X_scaled, y_synthetic, scaler)
-
-    async def _train_ensemble_models(self, X_train: np.ndarray, y_train: np.ndarray, scaler):
-        """Train ensemble of ML models"""
-        
-        # XGBoost
-        logger.info("Training XGBoost model...")
-        xgb_model = xgb.XGBClassifier(
-            n_estimators=100,
-            max_depth=6,
-            learning_rate=0.1,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            random_state=42,
-            eval_metric='auc'
-        )
-        xgb_model.fit(X_train, y_train)
-        
-        # LightGBM
-        logger.info("Training LightGBM model...")
-        lgb_model = lgb.LGBMClassifier(
-            n_estimators=100,
-            learning_rate=0.1,
-            num_leaves=31,
-            random_state=42,
-            verbose=-1
-        )
-        lgb_model.fit(X_train, y_train)
-        
-        # CatBoost
-        logger.info("Training CatBoost model...")
-        cat_model = cb.CatBoostClassifier(
-            iterations=100,
-            learning_rate=0.1,
-            depth=6,
-            random_state=42,
-            verbose=False
-        )
-        cat_model.fit(X_train, y_train)
-        
-        # Store models
-        self.models = {
-            'xgboost': xgb_model,
-            'lightgbm': lgb_model,
-            'catboost': cat_model
-        }
-        
-        self.scalers['main'] = scaler
-        
-        # Save models
-        models_dir = Path("models")
-        joblib.dump(xgb_model, models_dir / 'xgboost_model.joblib')
-        joblib.dump(lgb_model, models_dir / 'lightgbm_model.joblib')
-        joblib.dump(cat_model, models_dir / 'catboost_model.joblib')
-        joblib.dump(scaler, models_dir / 'scaler.joblib')
-        
-        logger.info("All models trained and saved successfully")
+        """Mock method removed to enforce production readiness"""
+        pass
 
     async def _load_existing_models(self):
         """Load pre-trained models from disk"""
@@ -199,7 +122,8 @@ class EnhancedFraudDetectionService:
         }
         
         self.scalers['main'] = joblib.load(models_dir / 'scaler.joblib')
-        self.feature_names = [f'V{i}' for i in range(1, 29)] + ['Amount', 'Time']
+        self.encoders = joblib.load(models_dir / 'encoders.joblib')
+        self.feature_names = joblib.load(models_dir / 'feature_names.joblib')
         
         logger.info("Existing models loaded successfully")
 
@@ -307,21 +231,23 @@ class EnhancedFraudDetectionService:
         Prepare transaction features for model input
         """
         try:
-            # Extract features (mock implementation for demo)
-            # In production, this would extract real features from transaction
-            features = []
+            # Create a one-row dataframe from the transaction data
+            df = pd.DataFrame([transaction_data])
             
-            # Mock PCA features V1-V28
-            for i in range(1, 29):
-                features.append(transaction_data.get(f'V{i}', np.random.randn()))
+            # Map transaction timestamp if not provided in raw format
+            if 'trans_date_trans_time' not in df.columns and 'timestamp' in df.columns:
+                df['trans_date_trans_time'] = df['timestamp']
+                
+            # Call the shared feature engineering pipeline
+            df_feat, _, _ = engineer_features(
+                df, 
+                is_training=False, 
+                encoders=self.encoders, 
+                scaler=self.scalers['main']
+            )
             
-            # Amount and Time features
-            features.append(transaction_data.get('Amount', 0.0))
-            features.append(transaction_data.get('Time', 0.0))
-            
-            # Convert to numpy array and scale
-            feature_array = np.array(features).reshape(1, -1)
-            scaled_features = self.scalers['main'].transform(feature_array)
+            # Ensure the features are in the exact same order as training
+            scaled_features = df_feat[self.feature_names].values
             
             return scaled_features
             

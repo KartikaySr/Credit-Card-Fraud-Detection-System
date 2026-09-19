@@ -15,83 +15,67 @@ export default function Sidebar() {
 
   return (
     <aside className="w-[260px] h-full bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col transition-colors duration-200">
-      {/* Workspace Header */}
-      <div className="p-4 hover:bg-[var(--sidebar-hover)] cursor-pointer transition-colors flex items-center gap-3 border-b border-[var(--border-color)]">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-blue-500/30">
-          K
-        </div>
-        <div className="flex flex-col">
-          <span className="font-semibold text-sm truncate">Kartikay's Workspace</span>
-          <span className="text-xs text-[var(--text-muted)]">Enterprise ML</span>
-        </div>
+      {/* Brand Header */}
+      <div className="p-6 flex items-center">
+        <h1 className="text-2xl font-bold tracking-wider" style={{ fontFamily: 'var(--font-serif)' }}>
+          GRIDS
+        </h1>
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 overflow-y-auto px-3 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-2 space-y-8">
         <div>
-          <div className="px-3 text-xs font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest">
-            Overview
-          </div>
           <SidebarItem href="/dashboard" icon={<Home size={18} />} label="Dashboard" active={pathname === '/dashboard'} />
-          <SidebarItem href="/dashboard/alerts" icon={<AlertCircle size={18} />} label="Alerts & Transactions" active={pathname === '/dashboard/alerts'} />
-          <SidebarItem href="/dashboard/audit" icon={<FileKey size={18} />} label="Cryptographic Audit Log" active={pathname === '/dashboard/audit'} />
-          <SidebarItem href="/dashboard/analytics" icon={<BarChart2 size={18} />} label="AI Analytics (SHAP)" active={pathname === '/dashboard/analytics'} />
-          <SidebarItem href="/dashboard/drift" icon={<TrendingDown size={18} />} label="Drift Monitor" active={pathname === '/dashboard/drift'} badge="MLOps" />
-        </div>
-
-        <div>
-          <div className="px-3 text-xs font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest">
-            Advanced Models
-          </div>
-          <SidebarItem href="/dashboard/ecosystem" icon={<LayoutGrid size={18} />} label="Module Ecosystem" active={pathname.startsWith('/dashboard/ecosystem')} />
-          <SidebarItem href="/dashboard/quantum" icon={<Cpu size={18} />} label="Quantum QNN" active={pathname === '/dashboard/quantum'} />
-          <SidebarItem href="/dashboard/federated" icon={<ShieldCheck size={18} />} label="Federated Learning" active={pathname === '/dashboard/federated'} />
-          <SidebarItem href="/dashboard/gnn" icon={<Network size={18} />} label="Graph Neural Nets" active={pathname === '/dashboard/gnn'} />
-          <SidebarItem href="/dashboard/streaming" icon={<Zap size={18} />} label="Live Streaming" active={pathname === '/dashboard/streaming'} />
-        </div>
-
-        <div>
-          <div className="px-3 text-xs font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest">
-            Configuration
-          </div>
-          <SidebarItem href="/dashboard/settings" icon={<Settings2 size={18} />} label="System Config" active={pathname === '/dashboard/settings'} />
+          <SidebarItem href="/dashboard/alerts" icon={<AlertCircle size={18} />} label="Point of Sale" active={pathname === '/dashboard/alerts'} />
+          <SidebarItem href="/dashboard/analytics" icon={<BarChart2 size={18} />} label="Customers" active={pathname === '/dashboard/analytics'} />
+          <SidebarItem href="/dashboard/ecosystem" icon={<LayoutGrid size={18} />} label="Inventory" active={pathname.startsWith('/dashboard/ecosystem')} />
+          <SidebarItem href="/dashboard/audit" icon={<FileKey size={18} />} label="Repairs" active={pathname === '/dashboard/audit'} />
+          <SidebarItem href="/dashboard/gnn" icon={<Network size={18} />} label="HR & Payroll" active={pathname === '/dashboard/gnn'} />
+          <SidebarItem href="/dashboard/federated" icon={<ShieldCheck size={18} />} label="Manufacturing" active={pathname === '/dashboard/federated'} />
+          <SidebarItem href="/dashboard/drift" icon={<TrendingDown size={18} />} label="Memo Mgmt" active={pathname === '/dashboard/drift'} />
+          <SidebarItem href="/dashboard/streaming" icon={<Zap size={18} />} label="Analytics & Targets" active={pathname === '/dashboard/streaming'} />
+          <SidebarItem href="/dashboard/quantum" icon={<Cpu size={18} />} label="Integrations" active={pathname === '/dashboard/quantum'} />
+          <SidebarItem href="/dashboard/settings" icon={<Settings2 size={18} />} label="Settings" active={pathname === '/dashboard/settings'} />
         </div>
       </div>
 
-      {/* Logout */}
-      <div className="p-3 border-t border-[var(--border-color)]">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[var(--text-muted)] hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
-        >
-          <LogOut size={18} />
-          <span>Logout</span>
-        </button>
+      {/* Profile / Logout Section (Bottom) */}
+      <div className="p-4 mt-auto">
+        <div className="flex items-center gap-3 px-2 py-3">
+          <div className="w-10 h-10 rounded-full bg-gray-800 border border-[var(--border-color)] flex items-center justify-center text-white text-sm font-semibold">
+            N
+          </div>
+          <div className="flex flex-col flex-1 overflow-hidden">
+            <span className="font-semibold text-sm text-white truncate">Isabella Rossi</span>
+            <span className="text-xs text-[var(--text-muted)]">Admin</span>
+          </div>
+          <button onClick={handleLogout} className="text-[var(--text-muted)] hover:text-white transition-colors">
+            <LogOut size={16} />
+          </button>
+        </div>
       </div>
     </aside>
   );
 }
 
 function SidebarItem({
-  icon, label, href, active = false, badge
+  icon, label, href, active = false
 }: {
-  icon: React.ReactNode; label: string; href: string; active?: boolean; badge?: string;
+  icon: React.ReactNode; label: string; href: string; active?: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 px-3 py-2 mt-1 rounded-lg text-sm cursor-pointer transition-all duration-200 ${
+      className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-200 mb-1 ${
         active
-          ? 'bg-white/10 text-white shadow-sm border border-white/5 font-semibold backdrop-blur-md'
-          : 'text-[var(--text-muted)] hover:bg-white/5 hover:text-gray-200'
+          ? 'sidebar-active font-medium'
+          : 'text-[var(--foreground)] hover:bg-white/5'
       }`}
     >
-      <span className={active ? 'text-blue-400' : ''}>{icon}</span>
+      <span className={active ? 'text-gold' : 'text-[var(--text-muted)]'}>{icon}</span>
       <span className="flex-1">{label}</span>
-      {badge && (
-        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/20">
-          {badge}
-        </span>
+      {active && (
+        <div className="w-1.5 h-1.5 rounded-full bg-[var(--gold-light)] ml-2 shadow-[0_0_8px_rgba(246,201,80,0.8)]" />
       )}
     </Link>
   );
