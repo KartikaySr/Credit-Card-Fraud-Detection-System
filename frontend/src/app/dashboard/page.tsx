@@ -96,16 +96,19 @@ export default function Dashboard() {
     }
     
     // Simulate updating the data with new fraud
-    setData((prev: any) => ({
-      ...prev,
-      transactions_processed: prev.transactions_processed + 500,
-      fraud_detected: prev.fraud_detected + 12,
-      fraud_rate: Number(((prev.fraud_detected + 12) / (prev.transactions_processed + 500) * 100).toFixed(2)),
-      recent_alerts: [
-        { id: `TXN-${Math.floor(Math.random()*10000)}`, amount: 45000, risk_score: 99.8, timestamp: new Date().toISOString() },
-        ...prev.recent_alerts
-      ]
-    }));
+    setData((prev: any) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        transactions_processed: prev.transactions_processed + 500,
+        fraud_detected: prev.fraud_detected + 12,
+        fraud_rate: Number(((prev.fraud_detected + 12) / (prev.transactions_processed + 500) * 100).toFixed(2)),
+        recent_alerts: [
+          { id: `TXN-${Math.floor(Math.random()*10000)}`, amount: 45000, risk_score: 99.8, timestamp: new Date().toISOString() },
+          ...(prev.recent_alerts || [])
+        ]
+      };
+    });
     toast.success('System updated with Live Feed metrics');
     setDemoRunning(false);
   };

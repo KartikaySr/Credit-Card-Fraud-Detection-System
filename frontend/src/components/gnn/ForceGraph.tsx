@@ -33,7 +33,7 @@ const generateGraphData = () => {
 };
 
 export default function ForceGraph() {
-  const fgRef = useRef<any>();
+  const fgRef = useRef<any>(null);
   const [data] = useState(generateGraphData());
   const [dimensions, setDimensions] = useState({ width: 600, height: 400 });
 

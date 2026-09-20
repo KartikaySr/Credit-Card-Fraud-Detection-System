@@ -20,16 +20,17 @@ const mockChartData = Array.from({ length: 24 }).map((_, i) => ({
   threats: Math.floor(Math.random() * 50) + 5
 }));
 
-export default function DynamicModulePage({ params }: { params: { id: string } }) {
+export default function DynamicModulePage({ params }: { params: Promise<{ id: string }> }) {
   const [logs, setLogs] = useState<string[]>([]);
-  const idString = params.id as string;
+  const resolvedParams = React.use(params);
+  const idString = resolvedParams.id;
   
   let moduleName = "Enterprise Security Module";
   let vMajor = 1;
   let vMinor = 0;
   let nodeHex = "UNKNOWN";
 
-  if (idString.startsWith('mod-')) {
+  if (idString && idString.startsWith('mod-')) {
     const i = parseInt(idString.replace('mod-', ''), 10);
     if (!isNaN(i)) {
       vMajor = (i * 7) % 5 + 1;

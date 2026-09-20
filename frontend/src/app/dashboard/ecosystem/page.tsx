@@ -12,7 +12,8 @@ const HERO_MODULES = [
     icon: <Globe className="text-emerald-400 w-8 h-8" />,
     href: '/dashboard/ecosystem/osint',
     status: 'ACTIVE',
-    color: 'from-emerald-500/20 to-teal-900/40'
+    color: 'from-emerald-500/20 to-teal-900/40',
+    nodeId: 'E3F9B2A1'
   },
   {
     id: 'biometrics',
@@ -21,7 +22,8 @@ const HERO_MODULES = [
     icon: <Activity className="text-amber-400 w-8 h-8" />,
     href: '/dashboard/ecosystem/biometrics',
     status: 'ACTIVE',
-    color: 'from-amber-500/20 to-yellow-900/40'
+    color: 'from-amber-500/20 to-yellow-900/40',
+    nodeId: 'A7C4D9F0'
   },
   {
     id: 'gnn',
@@ -30,7 +32,8 @@ const HERO_MODULES = [
     icon: <Network className="text-gold w-8 h-8" />,
     href: '/dashboard/gnn',
     status: 'ACTIVE',
-    color: 'from-gold/20 to-amber-900/40'
+    color: 'from-gold/20 to-amber-900/40',
+    nodeId: 'D8E1F4C2'
   }
 ];
 
@@ -102,7 +105,7 @@ export default function EcosystemPage() {
               <p className="text-sm text-gray-400 flex-grow">{mod.description}</p>
               
               <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
-                <span className="text-xs text-gray-500">Node ID: {(mod as any).nodeId || Math.random().toString(36).substring(2, 10).toUpperCase()}</span>
+                <span className="text-xs text-gray-500">Node ID: {(mod as any).nodeId || `NODE-${i}`}</span>
                 {mod.status === 'ACTIVE' && (
                   <span className="text-xs font-semibold text-gold group-hover:text-gold-light flex items-center gap-1">
                     Initialize <Zap className="w-3 h-3" />
